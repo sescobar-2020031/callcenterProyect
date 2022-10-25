@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "2142c94c-1fe3-4583-a6ca-6015bcdd7d6f",
+		"name": "CallcenterCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24070495"
+	},
+	"item": [
+		{
+			"name": "callRegister",
+			"item": [
+				{
+					"name": "TestCallRegister",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3200/callRegister/testCallRegister",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"callRegister",
+								"testCallRegister"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Call",
+			"item": [
+				{
+					"name": "TestCall",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3200/call/testCall",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"call",
+								"testCall"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "worker",
+			"item": [
+				{
+					"name": "TestWorker",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3200/worker/testWorker",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"worker",
+								"testWorker"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WorkerRegistration",
+			"item": [
+				{
+					"name": "TestWorkerRegistration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:3200/workerRegistration/testWorkerRegistration",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"workerRegistration",
+								"testWorkerRegistration"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
