@@ -13,7 +13,7 @@ exports.createToken = async(user)=>{
             email: user.email,
             iat: moment().unix(),
             exp: moment().add(3, 'hours').unix()
-        }
+        };
         return jwt.encode(payload, secretKey);
     }catch(err){
         console.log(err);
