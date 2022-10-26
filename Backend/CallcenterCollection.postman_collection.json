@@ -27,6 +27,178 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Start Working Day",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgxNzg3MywiZXhwIjoxNjY2ODI4NjczfQ.DHw8NRYX2h9kSVEoz-HT-Ws_kmzB7CAmg10izkWdUfE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "checkInTime",
+									"value": "2022-10-25T18:25:54.197Z",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3200/callRegister/startWorkingDay",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"callRegister",
+								"startWorkingDay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Finish Working Day",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgxNzg3MywiZXhwIjoxNjY2ODI4NjczfQ.DHw8NRYX2h9kSVEoz-HT-Ws_kmzB7CAmg10izkWdUfE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "checkOutTime",
+									"value": "2022-10-29T20:40:20.197Z",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3200/callRegister/finishWorkingDay",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"callRegister",
+								"finishWorkingDay"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get calls today",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgyMTc0OCwiZXhwIjoxNjY2ODMyNTQ4fQ.xZnVo6tXoCPHVbAPu4XKre9JjP-5SJMUCdGczFJqA5c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:3200/callRegister/getCallsToday",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"callRegister",
+								"getCallsToday"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Calls By Date",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgyMTc0OCwiZXhwIjoxNjY2ODMyNTQ4fQ.xZnVo6tXoCPHVbAPu4XKre9JjP-5SJMUCdGczFJqA5c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "date",
+									"value": "2022-10-25",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3200/callRegister/getCallsByDate",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"callRegister",
+								"getCallsByDate"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Calls",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgyMTc0OCwiZXhwIjoxNjY2ODMyNTQ4fQ.xZnVo6tXoCPHVbAPu4XKre9JjP-5SJMUCdGczFJqA5c",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
+						"url": {
+							"raw": "localhost:3200/callRegister/getAllCalls",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"callRegister",
+								"getAllCalls"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -34,7 +206,7 @@
 			"name": "Call",
 			"item": [
 				{
-					"name": "TestCall",
+					"name": "Test Call",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -51,6 +223,107 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Save Call",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgxNzg3MywiZXhwIjoxNjY2ODI4NjczfQ.DHw8NRYX2h9kSVEoz-HT-Ws_kmzB7CAmg10izkWdUfE",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "callTyping",
+									"value": "Venta nueva",
+									"type": "text"
+								},
+								{
+									"key": "startTime",
+									"value": "2022-10-26T08:36:14.197Z",
+									"type": "text"
+								},
+								{
+									"key": "endingTime",
+									"value": "2022-10-26T22:45:20.197Z",
+									"type": "text"
+								},
+								{
+									"key": "name",
+									"value": "Pedro",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "Armas",
+									"type": "text"
+								},
+								{
+									"key": "identificationNumber",
+									"value": "78451265",
+									"type": "text"
+								},
+								{
+									"key": "additionalInformation",
+									"value": "Taba enojado",
+									"type": "text"
+								},
+								{
+									"key": "contactNumber",
+									"value": "+57849612",
+									"type": "text"
+								},
+								{
+									"key": "solution",
+									"value": "Darle un telefono nuevo",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3200/call/saveCall",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"call",
+								"saveCall"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Call",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgxNzg3MywiZXhwIjoxNjY2ODI4NjczfQ.DHw8NRYX2h9kSVEoz-HT-Ws_kmzB7CAmg10izkWdUfE",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3200/call/getCall/6359a373f240fce84c51788d",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"call",
+								"getCall",
+								"6359a373f240fce84c51788d"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -58,7 +331,7 @@
 			"name": "worker",
 			"item": [
 				{
-					"name": "TestWorker",
+					"name": "Test Worker",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -75,26 +348,85 @@
 						}
 					},
 					"response": []
-				}
-			]
-		},
-		{
-			"name": "WorkerRegistration",
-			"item": [
+				},
 				{
-					"name": "TestWorkerRegistration",
+					"name": "Save Worker",
 					"request": {
-						"method": "GET",
+						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Samuel",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "sescobar@gmail.com2",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "+42694599",
+									"type": "text"
+								},
+								{
+									"key": "surname",
+									"value": "Escobar",
+									"type": "text"
+								}
+							]
+						},
 						"url": {
-							"raw": "localhost:3200/workerRegistration/testWorkerRegistration",
+							"raw": "localhost:3200/worker/register",
 							"host": [
 								"localhost"
 							],
 							"port": "3200",
 							"path": [
-								"workerRegistration",
-								"testWorkerRegistration"
+								"worker",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Worker",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "sescobar@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3200/worker/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3200",
+							"path": [
+								"worker",
+								"login"
 							]
 						}
 					},
