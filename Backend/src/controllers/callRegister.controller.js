@@ -1,14 +1,15 @@
 'use strict'
 
 const CallRegister = require('../models/callRegister.model');
+const Call = require('../models/call.model');
 const { validateData } = require('../utils/validate');
 
-exports.testCallRegister = (req,res) => {
-    return res.send({message: 'The test is working on -callRegister-'});
+exports.testCallRegister = (req, res) => {
+    return res.send({ message: 'The test is working on -callRegister-' });
 }
 
-exports.startWorkingDay = async (req,res) => {
-    try{
+exports.startWorkingDay = async (req, res) => {
+    try {
         const params = req.body;
         const userId = req.user.sub;
         let data = {
@@ -17,32 +18,107 @@ exports.startWorkingDay = async (req,res) => {
             checkInTime: params.checkInTime
         };
         let dataRequired = await validateData(data);
-        if(dataRequired) return res.status(400).send(dataRequired);
-        let workingDayExist = await CallRegister.findOne({$and: [{worker: userId},{state: 'Available'}]});
-        if(workingDayExist) return res.status(400).send({message: 'You are still in work day'});
+        if (dataRequired) return res.status(400).send(dataRequired);
+        let workingDayExist = await CallRegister.findOne({ $and: [{ worker: userId }, { state: 'Available' }] });
+        if (workingDayExist) return res.status(400).send({ message: 'You are still in work day' });
         let workDay = new CallRegister(data);
         await workDay.save();
-        if(!workDay) return res.status(500).send({message: 'Could not start the business day'});
-        return res.send({message: 'Workday successfully created', workDay});
-    }catch(err){
+        if (!workDay) return res.status(500).send({ message: 'Could not start the business day' });
+        return res.send({ message: 'Workday successfully created', workDay });
+    } catch (err) {
         console.log(err);
-        return res.status(500).send({message: 'Error starting the working day'});
+        return res.status(500).send({ message: 'Error starting the working day' });
     }
 }
 
-exports.finishWorkingDay = async (req,res) => {
-    try{
+exports.finishWorkingDay = async (req, res) => {
+    try {
         const params = req.body;
         const userId = req.user.sub;
         let data = {
             state: 'Done',
             checkOutTime: params.checkOutTime
         };
-        let finishWorkDay = await CallRegister.findOneAndUpdate({$and: [{worker: userId},{state: 'Available'}]}, data , {new: true});
-        if(!finishWorkDay) return res.status(500).send({message: 'You are no longer at work'});
-        return res.send({message: 'Work day completed successfully', finishWorkDay});
+        let finishWorkDay = await CallRegister.findOneAndUpdate({ $and: [{ worker: userId }, { state: 'Available' }] }, data, { new: true });
+        if (!finishWorkDay) return res.status(500).send({ message: 'You are no longer at work' });
+        return res.send({ message: 'Work day completed successfully', finishWorkDay });
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: 'Error finishing the working day' });
+    }
+}
+
+exports.getCallsToday = async (req, res) => {
+    try {
+        const userId = req.user.sub;
+        //We get today's date
+        const currentTime = new Date().toLocaleString();
+        //We separate the date and time
+        const splitAllDate = currentTime.split(' ');
+        //Separate day, month and year
+        const splitDateNoTime = splitAllDate[0].split('/');
+        //We verify that if the month and day is less than 10 add a 0
+        if (splitDateNoTime[0] < 10) 
+        {
+            splitDateNoTime[0] = '0' + splitDateNoTime[0];
+        }
+        if (splitDateNoTime[1] < 10) 
+        {
+            splitDateNoTime[1] = '0' + splitDateNoTime[1];
+        }
+        //We remove the comma a year
+        const splitExactDate = splitDateNoTime[2].split(',')
+        //We make the date
+        const startTime = splitExactDate[0] + '-' + splitDateNoTime[1] + '-' + splitDateNoTime[0];
+        //We make the date with one day more
+        const day = parseInt(splitDateNoTime[0])+1;
+        const finishTime = splitExactDate[0] + '-' + splitDateNoTime[1] + '-' + day;
+        console.log(startTime, finishTime)
+        //Search the database where all calls that are greater than "startTime" and less than "finishTime" are searched
+        const calls = await CallRegister.find({$and:[{checkInTime: {$gt: new Date(startTime)}},{checkInTime: {$lt: new Date(finishTime)}},{worker: userId}]}).populate('calls.call');
+        if(!calls) return res.status(400).send({message: 'No calls on this date'});
+        return res.send({message: 'Calls: ', calls})
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: 'Error getting calls' })
+    }
+}
+
+exports.getCallsByDate = async (req, res) => {
+    try {
+        const params = req.body;
+        const userId = req.user.sub;
+        let data = {
+            date: params.date
+        }
+        let dataRequired = await validateData(data);
+        if(dataRequired) return res.status(400).send(dataRequired);
+
+        const date = params.date.split('-')
+        const startTime = params.date;
+        const day = parseInt(date[2])+1
+        const finishTime = date[0] + "-" + date[1] + "-" + day
+
+        const calls = await CallRegister.find({$and:[{checkInTime: {$gt: new Date(startTime)}},{checkInTime: {$lt: new Date(finishTime)}},{worker: userId}]}).populate('calls.call');
+
+        if(!calls) return res.status(400).send({message: 'No calls on this date'});
+        return res.send({message: 'Calls: ', calls})
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: 'Error getting calls' })
+    }
+}
+
+exports.getAllCalls = async (req,res) => {
+    try{
+        const userId = req.user.sub;
+        const calls = await CallRegister.find({worker: userId}).populate('calls.call');
+        if(!calls) return res.status(400).send({message: 'You have not made calls'});
+        return res.send({message: 'Calls: ', calls})
     }catch(err){
         console.log(err);
-        return res.status(500).send({message: 'Error finishing the working day'});
+        return res.status(500).send({message: 'Error getting calls'})
     }
 }
