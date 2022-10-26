@@ -6,13 +6,14 @@ const callSchema = mongoose.Schema({
     callTyping: String,
     startTime: Date,
     endingTime: Date,
+    duration: Date,
     contactDescription: {
         name: String,
         surname: String,
         identificationNumber: Number,
         additionalInformation: String
     },
-    contactNumber: Number,
+    contactNumber: String,
     solution: String
 });
 
