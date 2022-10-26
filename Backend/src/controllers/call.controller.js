@@ -54,3 +54,15 @@ exports.saveCall = async(req,res) => {
         return res.status(500).send({message: 'Error saving a call'});
     }
 }
+
+exports.getCall = async (req,res) => {
+    try{
+        const callId = req.params.id;
+        const call = await Call.findOne({_id: callId});
+        if(!call) return res.status(400).send({message: 'Call not found'});
+        return res.send({message: 'Call: ', call})
+    }catch(err){
+        console.log(err);
+        return res.status(500).send({message: 'Error getting call'})
+    }
+}
