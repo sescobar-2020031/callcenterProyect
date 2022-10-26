@@ -7,8 +7,7 @@ const workerSchema = mongoose.Schema({
     surname: String,
     email: String,
     password: String,
-    username: String,
-    phoneNumber: String
+    phoneNumber: Number
 });
 
 module.exports = mongoose.model('Worker', workerSchema);
