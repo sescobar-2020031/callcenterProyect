@@ -41,6 +41,7 @@ exports.checkPassword = async (password, hash)=>{
 
 exports.validateNumber = async (number) => {
     for(let character of number){
+        if(character == '+') continue
         let numero = Number.isInteger(character * 1)
         if(!numero){
             return false;
