@@ -8,7 +8,7 @@ exports.validateData = async (data) => {
 
     for (let key of keys) {
         if (data[key] !== null && data[key] !== undefined && data[key] !== '') continue;
-        msg += `The ${key} is required\n`
+        msg += `The ${key} is required\n`;
     }
     return msg.trim();
 }
@@ -16,7 +16,7 @@ exports.validateData = async (data) => {
 exports.findUser = async (email) => {
     try{
         let userExist = await Worker.findOne({email: email});
-        return userExist
+        return userExist;
     }catch(err){
         return err;
     }
@@ -24,7 +24,7 @@ exports.findUser = async (email) => {
 
 exports.encryptPassword = async (password) => {
     try{
-        return bcrypt.hashSync(password)
+        return bcrypt.hashSync(password);
     }catch(err){
         return err;
     }
@@ -41,10 +41,10 @@ exports.checkPassword = async (password, hash)=>{
 
 exports.validateNumber = async (number) => {
     for(let character of number){
-        if(character == '+') continue
-        let numero = Number.isInteger(character * 1)
+        if(character == '+') continue;
+        let numero = Number.isInteger(character * 1);
         if(!numero){
-            return false;
+            return false;;
         }
     };
     return true;

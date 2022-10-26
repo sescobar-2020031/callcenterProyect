@@ -9,8 +9,7 @@ const cors = require ('cors');
 //Import the Routes
 const callRegisterRoutes = require('../src/routes/callRegister.routes');
 const callRoutes = require('../src/routes/call.routes');
-const workerRoutes = require('../src/routes/worker.routes')
-const WorkerRegistration = require('../src/routes/workerRegistration.routes')
+const workerRoutes = require('../src/routes/worker.routes');
 
 //APP -> HTTP Server (Express)
 const app = express(); //Create Express Server
@@ -25,7 +24,6 @@ app.use(cors());
 app.use('/callRegister', callRegisterRoutes);
 app.use('/call', callRoutes);
 app.use('/worker', workerRoutes);
-app.use('/workerRegistration', WorkerRegistration)
 
 //Export//
 module.exports = app;

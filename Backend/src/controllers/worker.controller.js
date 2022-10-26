@@ -5,7 +5,7 @@ const jwt = require('../services/jwt');
 const { validateData, findUser, encryptPassword, validateNumber, checkPassword } = require('../utils/validate');
 
 exports.testWorker = (req,res) => {
-    return res.send({message: 'The test is working on -Worker-'})
+    return res.send({message: 'The test is working on -Worker-'});
 }
 
 exports.register = async (req,res) => {
@@ -17,21 +17,21 @@ exports.register = async (req,res) => {
             email: params.email,
             password: params.password,
             phoneNumber: params.phoneNumber
-        }
+        };
         let dataRequired = await validateData(data);
         if(dataRequired) return res.status(400).send(dataRequired);
         let validNumber = await validateNumber(data.phoneNumber);
-        if(!validNumber) return res.status(400).send({message: 'Your phone number contains a letter'})
+        if(!validNumber) return res.status(400).send({message: 'Your phone number contains a letter'});
         let userExist = await findUser(data.email);
         if(userExist) return res.status(400).send({message: 'Email already registered'});
         data.password = await encryptPassword(data.password);
         let savedWorker = new Worker(data);
         await savedWorker.save();
-        if(!savedWorker) return res.status(500).send({message: 'Could not register a worker'})
-        return res.send({message: 'Worker successfully created', savedWorker})
+        if(!savedWorker) return res.status(500).send({message: 'Could not register a worker'});
+        return res.send({message: 'Worker successfully created', savedWorker});
     }catch(err){
         console.log(err);
-        return res.status(500).send({err, message: 'Error saving a worker'})
+        return res.status(500).send({err, message: 'Error saving a worker'});
     }
 }
 
@@ -41,7 +41,7 @@ exports.login = async(req,res) => {
         let data = {
             email: params.email,
             password: params.password
-        }
+        };
         let dataRequired = await validateData(data);
         if(dataRequired) return res.status(400).send(dataRequired);
         let userExist = await findUser(data.email);
@@ -52,6 +52,6 @@ exports.login = async(req,res) => {
         } return res.status(400).send({message: 'Invalid credentials'});
     }catch(err){
         console.log(err);
-        return res.status(500).send({err, message: 'Failed to login'})
+        return res.status(500).send({err, message: 'Failed to login'});
     }
 }
