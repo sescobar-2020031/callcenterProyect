@@ -73,12 +73,10 @@ exports.getCallsToday = async (req, res) => {
         //We make the date with one day more
         const day = parseInt(splitDateNoTime[0])+1;
         const finishTime = splitExactDate[0] + '-' + splitDateNoTime[1] + '-' + day;
-        console.log(startTime, finishTime)
         //Search the database where all calls that are greater than "startTime" and less than "finishTime" are searched
         const calls = await CallRegister.find({$and:[{checkInTime: {$gt: new Date(startTime)}},{checkInTime: {$lt: new Date(finishTime)}},{worker: userId}]}).populate('calls.call');
         if(!calls) return res.status(400).send({message: 'No calls on this date'});
         return res.send({message: 'Calls: ', calls})
-
     } catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error getting calls' })
