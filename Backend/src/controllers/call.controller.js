@@ -38,9 +38,10 @@ exports.saveCall = async(req,res) => {
         if(!validIdentificationNumber) return res.status(400).send({message: 'The Identification Number contains a letter'});
 
         data.contactDescription = contactDescription;
-        const durationDate = new Date(new Date(data.endingTime) - new Date(data.startTime));
-        data.duration = durationDate
 
+        const durationDate = new Date(new Date(data.endingTime) - new Date(data.startTime));
+        data.duration = durationDate.toJSON().slice(11,19);
+        
         let call = new Call(data);
         await call.save();
         if(!call) return res.status(500).send({message: 'Could not save the call'});

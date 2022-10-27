@@ -44,7 +44,7 @@ exports.validateNumber = async (number) => {
         if(character == '+') continue;
         let numero = Number.isInteger(character * 1);
         if(!numero){
-            return false;;
+            return false;
         }
     };
     return true;
