@@ -48,7 +48,7 @@ exports.login = async(req,res) => {
         if(userExist && await checkPassword(data.password, userExist.password)){
             let token = await jwt.createToken(userExist);
             userExist.password = undefined; 
-            return res.send({token, message: `Login successfuly, welcome ${userExist.name}`, user: userExist});
+            return res.send({token, message: `Welcome ${userExist.name} ${userExist.surname}`, user: userExist});
         } return res.status(400).send({message: 'Invalid credentials'});
     }catch(err){
         console.log(err);
