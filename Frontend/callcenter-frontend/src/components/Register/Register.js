@@ -53,13 +53,13 @@ const Register = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Grid container component="main" sx={{ height: '100vh' }}>
+            <Grid container component="main" sx={{ height: '80vh' }}>
                 <CssBaseline />
                 <Grid
                     item
                     xs={false}
                     sm={4}
-                    md={7}
+                    md={6}
                     sx={{
                         backgroundImage: `url(${backgroundImage})`,
                         backgroundRepeat: 'no-repeat',

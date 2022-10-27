@@ -10,13 +10,13 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
-import Swal from 'sweetalert2'; 
-import {Link as LinkReact, Navigate} from "react-router-dom";
+import Swal from 'sweetalert2';
+import { Link as LinkReact, Navigate } from "react-router-dom";
 import backgroundImage from '../../shared/img/backgroundLogin.png'
 
 const theme = createTheme();
 
-const Login = () => {
+const Login = ({logged, setLogged}) => {
 
   //status for each attribute in the list(update)
   const [navigate, setNavigate] = useState(false);
@@ -31,36 +31,37 @@ const Login = () => {
     }).then((res) => {
       localStorage.setItem('identity', JSON.stringify(res.data.user));
       localStorage.setItem('loggedIn', true);
+      setLogged(true)
       localStorage.setItem('token', res.data.token);
       Swal.fire
-      ({
-        icon: 'success',
-        title: (res.data.message),
-        confirmButtonColor: '#28B463'
-      });
+        ({
+          icon: 'success',
+          title: (res.data.message),
+          confirmButtonColor: '#28B463'
+        });
       setNavigate(true);
     }).catch((err) => {
       Swal.fire({
         icon: 'error',
-        title: (err.response.data.message||err.response.data),
+        title: (err.response.data.message || err.response.data),
         confirmButtonColor: '#E74C3C'
       });
     });
   };
 
-  if(navigate){
-    return <Navigate to='/callcenter'/>;
+  if (navigate) {
+    return <Navigate to='/homePage' />;
   }
 
   return (
     <ThemeProvider theme={theme}>
-      <Grid container component="main" sx={{ height: '100vh' }}>
+      <Grid container component="main" sx={{ height: '80vh' }}>
         <CssBaseline />
         <Grid
           item
           xs={false}
           sm={4}
-          md={7}
+          md={6}
           sx={{
             backgroundImage: `url(${backgroundImage})`,
             backgroundRepeat: 'no-repeat',
@@ -68,7 +69,7 @@ const Login = () => {
             backgroundPosition: 'center',
           }}
         />
-        <Grid item xs={12} sm={8} md={5} component={Paper} sx={{boxShadow: "none"}}>
+        <Grid item xs={12} sm={8} md={5} component={Paper} sx={{ boxShadow: "none" }}>
           <Box
             sx={{
               my: 8,
@@ -117,7 +118,7 @@ const Login = () => {
               </Button>
               <Grid container>
                 <Grid item>
-                  <LinkReact to="/register" style={{ textDecoration: 'none', color: "inherit"}}>
+                  <LinkReact to="/register" style={{ textDecoration: 'none', color: "inherit" }}>
                     {"Don't have an account? Sign Up"}
                   </LinkReact>
                 </Grid>
