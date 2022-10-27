@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "79dbaa2c-ff35-42ee-b9a3-075e186fe5ed",
+		"_postman_id": "2142c94c-1fe3-4583-a6ca-6015bcdd7d6f",
 		"name": "CallcenterCollection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "19460123"
+		"_exporter_id": "24070495"
 	},
 	"item": [
 		{
@@ -35,7 +35,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgzOTYwNSwiZXhwIjoxNjY2ODUwNDA1fQ.pTp7lbl9dc8Pfs2Jb_UZ8ffFX9E420HMwtxLRO1I17s",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzVhYjBiOWU1ZTg2ODY4ZDIwNmM1NDkiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyIiwiaWF0IjoxNjY2OTExNTUzLCJleHAiOjE2NjY5MjIzNTN9.IcpW2bR_24md-TkrJ-XFPQEA0nkM2qHW_doMHNHeLSY",
 								"type": "text"
 							}
 						],
@@ -44,7 +44,7 @@
 							"urlencoded": [
 								{
 									"key": "checkInTime",
-									"value": "2022-10-25T18:25:54.197Z",
+									"value": "2022-10-24T18:25:54.197Z",
 									"type": "text"
 								}
 							]
@@ -70,7 +70,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2NjgzOTYwNSwiZXhwIjoxNjY2ODUwNDA1fQ.pTp7lbl9dc8Pfs2Jb_UZ8ffFX9E420HMwtxLRO1I17s",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzVhYjBiOWU1ZTg2ODY4ZDIwNmM1NDkiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyIiwiaWF0IjoxNjY2OTExNTUzLCJleHAiOjE2NjY5MjIzNTN9.IcpW2bR_24md-TkrJ-XFPQEA0nkM2qHW_doMHNHeLSY",
 								"type": "text"
 							}
 						],
@@ -79,7 +79,7 @@
 							"urlencoded": [
 								{
 									"key": "checkOutTime",
-									"value": "2022-10-29T20:40:20.197Z",
+									"value": "2022-10-24T20:40:20.197Z",
 									"type": "text"
 								}
 							]
@@ -108,7 +108,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2Njg1MTEzNywiZXhwIjoxNjY2ODYxOTM3fQ.pA7NB5Jb_GYqb7g0sNoj3ReGodRQ9gLRYL19EaR0os8",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzVhYjBiOWU1ZTg2ODY4ZDIwNmM1NDkiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyIiwiaWF0IjoxNjY2OTAwNDUzLCJleHAiOjE2NjY5MTEyNTN9.il0buchy-HCQNMjfAQU2_f7WxhoCCdOK70lURNq_Nwg",
 								"type": "text"
 							}
 						],
@@ -140,7 +140,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2Njg1MTEzNywiZXhwIjoxNjY2ODYxOTM3fQ.pA7NB5Jb_GYqb7g0sNoj3ReGodRQ9gLRYL19EaR0os8",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzVhYjBiOWU1ZTg2ODY4ZDIwNmM1NDkiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyIiwiaWF0IjoxNjY2OTAwNDUzLCJleHAiOjE2NjY5MTEyNTN9.il0buchy-HCQNMjfAQU2_f7WxhoCCdOK70lURNq_Nwg",
 								"type": "text"
 							}
 						],
@@ -149,7 +149,7 @@
 							"urlencoded": [
 								{
 									"key": "date",
-									"value": "2022-10-26",
+									"value": "2022-10-27",
 									"type": "text"
 								}
 							]
@@ -178,7 +178,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2Njg1MTEzNywiZXhwIjoxNjY2ODYxOTM3fQ.pA7NB5Jb_GYqb7g0sNoj3ReGodRQ9gLRYL19EaR0os8",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzVhYjBiOWU1ZTg2ODY4ZDIwNmM1NDkiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyIiwiaWF0IjoxNjY2OTExNzkzLCJleHAiOjE2NjY5MjI1OTN9.nizm6sP0133qezRVXuhqJ3abaOIajj8iKjQeKPBgLhU",
 								"type": "text"
 							}
 						],
@@ -231,7 +231,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzU5NmFlNjk0NmZlYmJlYTJjMWI4NWYiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyQGdtYWlsLmNvbSIsImlhdCI6MTY2Njg1MTEzNywiZXhwIjoxNjY2ODYxOTM3fQ.pA7NB5Jb_GYqb7g0sNoj3ReGodRQ9gLRYL19EaR0os8",
+								"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2MzVhYjBiOWU1ZTg2ODY4ZDIwNmM1NDkiLCJuYW1lIjoiU2FtdWVsIiwic3VybmFtZSI6IkVzY29iYXIiLCJlbWFpbCI6InNlc2NvYmFyIiwiaWF0IjoxNjY2OTExNTUzLCJleHAiOjE2NjY5MjIzNTN9.IcpW2bR_24md-TkrJ-XFPQEA0nkM2qHW_doMHNHeLSY",
 								"type": "text"
 							}
 						],
@@ -245,17 +245,17 @@
 								},
 								{
 									"key": "startTime",
-									"value": "2022-10-26T08:36:14.197Z",
+									"value": "2022-10-27T08:36:14.197Z",
 									"type": "text"
 								},
 								{
 									"key": "endingTime",
-									"value": "2022-10-26T22:45:20.197Z",
+									"value": "2022-10-27T22:45:20.197Z",
 									"type": "text"
 								},
 								{
 									"key": "name",
-									"value": "Pedro",
+									"value": "a",
 									"type": "text"
 								},
 								{
@@ -364,7 +364,7 @@
 								},
 								{
 									"key": "email",
-									"value": "sescobar@gmail.com2",
+									"value": "sescobar@gmail.com",
 									"type": "text"
 								},
 								{
@@ -408,7 +408,7 @@
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "sescobar@gmail.com",
+									"value": "sescobar",
 									"type": "text"
 								},
 								{
