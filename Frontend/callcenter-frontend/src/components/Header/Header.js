@@ -32,7 +32,7 @@ const Header = ({logged, setLogged}) => {
         <React.Fragment>
             <AppBar sx={{ background: "#3d75f0" }}>
                 <Toolbar>
-                    <LinkReact to={logged ? "/callcenter" : "/"} style={{ textDecoration: 'none', color: "inherit", display: "flex" }}>
+                    <LinkReact to={logged ? "/homePage" : "/"} style={{ textDecoration: 'none', color: "inherit", display: "flex" }}>
                         <FactCheckIcon sx={{ fontSize: "2.3rem", mr: "0.3rem" }} />
                         <Typography sx={{ fontSize: "1.5rem" }}>
                             Teléfonos S.A.

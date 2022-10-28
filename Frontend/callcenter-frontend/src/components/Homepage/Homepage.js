@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
+import AddCall from '../Calls/AddCall';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import token from '../../shared/userData/getToken';
+import PreviousWorkDays from '../PreviousWorkDays/PreviousWorkDays';
 import { Button } from "@mui/material";
 import Table from '@mui/material/Table';
 import { styled } from '@mui/material/styles';
@@ -10,38 +12,50 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ModeEditIcon from '@mui/icons-material/ModeEdit';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import { Link as LinkReact, Navigate } from "react-router-dom";
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 
 const Homepage = () => {
 
     //status for callcenter
+    const [navigate, setNavigate] = useState(false);
+
     const [laborJourneys, setJourneys] = useState([]);
+    const [previousLaborJourneys, setPreviousLaborJourneys] = useState([]);
 
-    const [callTyping, setCallTyping] = useState('');
-    const [startTime, setStartTime] = useState('');
-    const [endingTime, setEndingTime] = useState('');
-    const [name, setName] = useState('');
-    const [surname, setSurname] = useState('');
-    const [IdentificationNumber, setIdentificationNumber] = useState('');
-    const [additionalInformation, setAdditionalInformation] = useState('');
-    const [contactNumber, setContactNumber] = useState('');
-    const [solution, setSolution] = useState('');
-    const [open, setOpen] = useState(false);
+    const [todaysJourneyAvailable, setTodaysJourneyAvailable] = useState(false);
+    const [previousJourneyAvailable, setPreviousJourneyAvailable] = useState(false);
+    const [callsAvailable, setCallsAvailable] = useState(false);
 
-    const handleOpen = () => setOpen(true);
+    const [refresh, setRefresh] = useState(0);
 
-    useEffect(() => {
-        const config = {
-            headers: {
-                Authorization: token()
-            }
-        }
-        axios.get('http://localhost:3200/callRegister/getCallsToday', config)
+    const [values, setValues] = useState({
+        callTyping: "",
+        startTime: "",
+        endingTime: "",
+        name: "",
+        surname: "",
+        identificationNumber: 0,
+        additionalInformation: "",
+        contactNumber: 0,
+        solution: "",
+    })
+
+    const getPreviousWorkingDays = async () => {
+        axios.get('http://localhost:3200/callRegister/getAllCalls', { headers: { Authorization: token() } })
             .then((res) => {
-                console.log(res.data.calls)
-                setJourneys(res.data.calls);
+                if (res.data.journeys.length !== 0) {
+                    if (res.data.journeys[0].calls.length !== 0) {
+                        setPreviousJourneyAvailable(true)
+                    } else {
+                        setPreviousJourneyAvailable(false)
+                    }
+                } else {
+                    setPreviousJourneyAvailable(false)
+                }
+                setPreviousLaborJourneys(res.data.journeys);
             }).catch((err) => {
                 Swal.fire({
                     icon: 'error',
@@ -49,7 +63,35 @@ const Homepage = () => {
                     confirmButtonColor: '#E74C3C'
                 });
             });
-    }, []);
+    }
+
+    useEffect(() => {
+        axios.get('http://localhost:3200/callRegister/getCallsToday', { headers: { Authorization: token() } })
+            .then((res) => {
+                if (res.data.journeys.length !== 0) {
+                    for (let journey of res.data.journeys) {
+                        if (journey.calls.length !== 0) {
+                            setCallsAvailable(true)
+
+                        } else {
+                            setCallsAvailable(false)
+                            getPreviousWorkingDays();
+                        }
+                    }
+                    setTodaysJourneyAvailable(true)
+                } else {
+                    setTodaysJourneyAvailable(false);
+                    getPreviousWorkingDays();
+                }
+                setJourneys(res.data.journeys);
+            }).catch((err) => {
+                Swal.fire({
+                    icon: 'error',
+                    title: (err.response.data.message || err.response.data),
+                    confirmButtonColor: '#E74C3C'
+                });
+            });
+    }, [refresh]);
 
     //styles for the table
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -80,35 +122,63 @@ const Homepage = () => {
     });
 
     return (
-        <div>
-            <TableContainer component={Paper} sx={{ marginTop: '3%' }}>
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell align="center">State</StyledTableCell>
-                            <StyledTableCell align="center">Check In Time</StyledTableCell>
-                            <StyledTableCell align="center">Check Out Time</StyledTableCell>
-                            <StyledTableCell align="center">Call Numbers</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.map((row) => (
-                            <StyledTableRow key={row.Id} >
-                                <StyledTableCell align="center"> {row.state} </StyledTableCell>
-                                <StyledTableCell align="center">{new Date(row.checkInTime).toString().slice(0,24)}</StyledTableCell>
-                                {
-                                    row.checkOutTime ? <StyledTableCell align="center">{new Date(row.checkOutTime).toString().slice(0,24)}</StyledTableCell>
-                                    : <StyledTableCell align="center" sx={{fontSize: '3rem'}}>Work day in progress</StyledTableCell>
-                                }
-                                {
-                                    <StyledTableCell align="center">{row.calls.length}</StyledTableCell>
-                                }
-                            </StyledTableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </div>
+        todaysJourneyAvailable && callsAvailable ?
+            <div>
+                <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                <Typography align='center' variant="h4">Today's calls</Typography>;
+                <TableContainer sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Table sx={{ minWidth: 700, width: '90%' }} aria-label="customized table">
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell align="center">Call Typing</StyledTableCell>
+                                <StyledTableCell align="center">Start Time</StyledTableCell>
+                                <StyledTableCell align="center">Ending Time</StyledTableCell>
+                                <StyledTableCell align="center">Duration</StyledTableCell>
+                                <StyledTableCell align="center">Contact Number</StyledTableCell>
+                                <StyledTableCell align="center">Solution</StyledTableCell>
+                                <StyledTableCell align="center">Name of individual</StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        {
+                            rows.map((row) => {
+                                return (
+                                    row.calls.map((call) => {
+                                        return (
+                                            <TableBody>
+                                                <StyledTableRow key={call.call._id} >
+                                                    <StyledTableCell align="center">{call.call.callTyping}</StyledTableCell>
+                                                    <StyledTableCell align="center">{new Date(call.call.startTime).toString().slice(0, 24)}</StyledTableCell>
+                                                    <StyledTableCell align="center">{new Date(call.call.endingTime).toString().slice(0, 24)}</StyledTableCell>
+                                                    <StyledTableCell align="center">{call.call.duration}</StyledTableCell>
+                                                    <StyledTableCell align="center">{call.call.contactNumber}</StyledTableCell>
+                                                    <StyledTableCell align="center">{call.call.solution}</StyledTableCell>
+                                                    <StyledTableCell align="center">{call.call.contactDescription.name}</StyledTableCell>
+                                                </StyledTableRow>
+                                            </TableBody>
+                                        )
+                                    })
+                                )
+                            })
+                        }
+                    </Table>
+                </TableContainer>
+                <Box textAlign='center' sx={{mt: '1rem'}}>
+                    <LinkReact to="/previousWorkDays" style={{ textDecoration: 'none', color: "inherit", marginLeft: "auto" }}>
+                        <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>show Table Previous Work Days</Button>
+                    </LinkReact>
+                </Box>
+            </div>
+            : previousJourneyAvailable
+                ?
+                <div>
+                    <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                    <PreviousWorkDays values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} previousLaborJourneys={previousLaborJourneys} setPreviousLaborJourneys={setPreviousLaborJourneys} setPreviousJourneyAvailable={setPreviousJourneyAvailable} />
+                </div>
+                :
+                <div>
+                    <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                    <Typography align='center' variant="h4">You have no working days available</Typography>;
+                </div>
     )
 }
 
