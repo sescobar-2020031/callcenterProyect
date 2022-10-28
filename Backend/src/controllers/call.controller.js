@@ -12,13 +12,27 @@ exports.saveCall = async(req,res) => {
     try{
         const params = req.body;
         const userId = req.user.sub;
+        
+        const startTimeSeparate = params.startTime.split(' ');
+        const startTimeMonthDay = startTimeSeparate[0].split('/');
+        const startTimeYear = startTimeMonthDay[2].split(',');
+
+        const startTime = startTimeYear[0] + '-' + startTimeMonthDay[1] + '-' + startTimeMonthDay[0]+ 'T' + startTimeSeparate[1] + '.000Z'
+
+        const endingTimeSeparate = params.endingTime.split(' ');
+        const endingTimeMonthDay = endingTimeSeparate[0].split('/');
+        const endingTimeYear = endingTimeMonthDay[2].split(',');
+
+        const endingTime = endingTimeYear[0] + '-' + endingTimeMonthDay[1] + '-' + endingTimeMonthDay[0]+ 'T' + endingTimeSeparate[1] + '.000Z'
+
         let data = {
             callTyping: params.callTyping,
-            startTime: params.startTime,
-            endingTime: params.endingTime,
+            startTime: startTime,
+            endingTime: endingTime,
             contactNumber: params.contactNumber,
             solution: params.solution
         };
+    
         let dataRequired = await validateData(data);
         if(dataRequired) return res.status(400).send(dataRequired);
 

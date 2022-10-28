@@ -68,9 +68,9 @@ exports.getCallsToday = async (req, res) => {
         const day = parseInt(splitDateNoTime[0]) + 1;
         const finishTime = splitExactDate[0] + '-' + splitDateNoTime[1] + '-' + day;
         //Search the database where all calls that are greater than "startTime" and less than "finishTime" are searched
-        const calls = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] }).populate('calls.call');
-        if (!calls) return res.status(400).send({ message: 'No calls on this date' });
-        return res.send({ message: 'Calls: ', calls })
+        const journeys = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] }).populate('calls.call');
+        if (!journeys) return res.status(400).send({ message: 'No calls on this date' });
+        return res.send({ message: 'Calls: ', journeys })
     } catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error getting calls' })
@@ -95,22 +95,22 @@ exports.getCallsByDate = async (req, res) => {
         const calls = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] }).populate('calls.call');
 
         if (!calls) return res.status(400).send({ message: 'No calls on this date' });
-        return res.send({ message: 'Calls: ', calls })
+        return res.send({ message: 'Journeys: ', calls })
 
     } catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting calls' })
+        return res.status(500).send({ message: 'Error getting Journeys' })
     }
 }
 
 exports.getAllCalls = async (req, res) => {
     try {
         const userId = req.user.sub;
-        const calls = await CallRegister.find({ worker: userId }).populate('calls.call');
-        if (!calls) return res.status(400).send({ message: 'You have not made calls' });
-        return res.send({ message: 'Calls: ', calls })
+        const journeys = await CallRegister.find({ worker: userId }).populate('calls.call');
+        if (!journeys) return res.status(400).send({ message: 'You have not made calls' });
+        return res.send({ message: 'Journeys: ', journeys })
     } catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting calls' })
+        return res.status(500).send({ message: 'Error getting Journeys' })
     }
 }
