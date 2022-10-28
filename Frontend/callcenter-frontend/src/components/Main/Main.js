@@ -10,6 +10,7 @@ import {
     Route,
     Navigate
 } from "react-router-dom";
+import PreviousWorkDays from '../PreviousWorkDays/PreviousWorkDays';
 
 
 export const Main = () => {
@@ -24,6 +25,7 @@ export const Main = () => {
                 <Route exact path="/register" element={<Register />} />
                 <Route element={<ProtectedRoutes />}>
                     <Route path='/homePage' element={<HomePage />} />
+                    <Route path='/previousWorkDays' element={<PreviousWorkDays />} />
                 </Route>
                 <Route path="/" element={<Navigate to="/login" replace />} />
                 <Route path="*" element={<Navigate to="/login" replace />} />
