@@ -7,13 +7,13 @@ import {
     useMediaQuery,
     useTheme,
 } from "@mui/material";
-import FactCheckIcon from '@mui/icons-material/FactCheck';
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import { Link, Link as LinkReact } from "react-router-dom";
 import NavigationDrawer from "../NavigationDrawer/NavigationDrawer";
+import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import { Stack } from "@mui/system";
 
 const Header = ({logged, setLogged}) => {
@@ -24,7 +24,7 @@ const Header = ({logged, setLogged}) => {
     const logout = async () => {
         localStorage.removeItem('identity');
         localStorage.removeItem('token');
-        localStorage.setItem('loggedIn', false )
+        localStorage.removeItem('loggedIn');
         setLogged(false)
     }
 
@@ -33,7 +33,7 @@ const Header = ({logged, setLogged}) => {
             <AppBar sx={{ background: "#3d75f0" }}>
                 <Toolbar>
                     <LinkReact to={logged ? "/homePage" : "/"} style={{ textDecoration: 'none', color: "inherit", display: "flex" }}>
-                        <FactCheckIcon sx={{ fontSize: "2.3rem", mr: "0.3rem" }} />
+                        <ContactPhoneIcon sx={{ fontSize: "2.3rem", mr: "0.3rem" }} />
                         <Typography sx={{ fontSize: "1.5rem" }}>
                             Teléfonos S.A.
                         </Typography>
