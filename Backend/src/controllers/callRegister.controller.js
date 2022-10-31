@@ -1,7 +1,6 @@
 'use strict'
 
 const CallRegister = require('../models/callRegister.model');
-const Call = require('../models/call.model');
 const { validateData } = require('../utils/validate');
 
 exports.testCallRegister = (req, res) => {
@@ -18,12 +17,12 @@ exports.startWorkingDay = async (req, res) => {
         const checkInTimeYear = checkInTimeMonthDay[2].split(',');
 
         const checkInTimeHourMinuteSecond = checkInTimeSeparate[1].split(':');
-        if(parseInt(checkInTimeHourMinuteSecond[0]) < 10){
-            checkInTimeHourMinuteSecond[0] = '0'+ checkInTimeHourMinuteSecond[0]
+        if (parseInt(checkInTimeHourMinuteSecond[0]) < 10) {
+            checkInTimeHourMinuteSecond[0] = '0' + checkInTimeHourMinuteSecond[0]
         }
 
         const time = checkInTimeHourMinuteSecond[0] + ':' + checkInTimeHourMinuteSecond[1] + ':' + checkInTimeHourMinuteSecond[2]
-        const checkInTime = checkInTimeYear[0] + '-' + checkInTimeMonthDay[1] + '-' + checkInTimeMonthDay[0]+ 'T' + time + '.000Z'
+        const checkInTime = checkInTimeYear[0] + '-' + checkInTimeMonthDay[1] + '-' + checkInTimeMonthDay[0] + 'T' + time + '.000Z'
 
         let data = {
             worker: userId,
@@ -55,21 +54,49 @@ exports.finishWorkingDay = async (req, res) => {
         const checkOutTimeYear = checkOutTimeMonthDay[2].split(',');
 
         const checkOutTimeHourMinuteSecond = checkOutTimeSeparate[1].split(':');
-        if(parseInt(checkOutTimeHourMinuteSecond[0]) < 10){
-            checkOutTimeHourMinuteSecond[0] = '0'+ checkOutTimeHourMinuteSecond[0]
+        if (parseInt(checkOutTimeHourMinuteSecond[0]) < 10) {
+            checkOutTimeHourMinuteSecond[0] = '0' + checkOutTimeHourMinuteSecond[0]
         }
 
         const time = checkOutTimeHourMinuteSecond[0] + ':' + checkOutTimeHourMinuteSecond[1] + ':' + checkOutTimeHourMinuteSecond[2]
-        const checkOutTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0]+ 'T' + time + '.000Z'
+        const checkOutTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0] + 'T' + time + '.000Z'
 
-        let data = {
-            state: 'Done',
-            checkOutTime: checkOutTime
-        };
+        const startTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0]
 
-        let finishWorkDay = await CallRegister.findOneAndUpdate({ $and: [{ worker: userId }, { state: 'Available' }] }, data, { new: true });
-        if (!finishWorkDay) return res.status(500).send({ message: 'You are no longer at work' });
-        return res.send({ message: 'Work day completed successfully', finishWorkDay });
+        var day = parseInt(checkOutTimeMonthDay[0]) + 1;
+        const date = new Date();
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        var month = checkOutTimeMonthDay[1]
+        if (lastDay.toLocaleDateString().split('/')[0] < day) {
+            day = '01';
+            month = parseInt(checkOutTimeMonthDay[1]) + 1
+        }
+
+        const finishTime = checkOutTimeYear[0] + '-' + month + '-' + day
+
+        const workDayExist = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] });
+
+        if (workDayExist.length === 1) {
+            let data = {
+                state: 'Done',
+                checkOutTime: checkOutTime
+            };
+            let finishWorkDay = await CallRegister.findOneAndUpdate({ $and: [{ worker: userId }, { state: 'Available' }] }, data, { new: true });
+            return res.send({ message: 'Work day completed successfully', finishWorkDay });
+        } else {
+            var workDayDone = await CallRegister.findOne({ $and: [{ worker: userId }, { state: 'Done' }] }).populate('calls.call');
+            var workDayAvailable = await CallRegister.findOne({ $and: [{ worker: userId }, { state: 'Available' }] }).populate('calls.call');
+            let data = {
+                state: 'Done',
+                calls: workDayDone.calls.concat(workDayAvailable.calls),
+                checkOutTime: checkOutTime
+            }
+            let finishWorkDay = await CallRegister.findOneAndUpdate({ _id: workDayDone._id }, data, { new: true });
+            if(!finishWorkDay) return res.status(500).send({message: 'Error ending the day'})
+            let deleteWorkDayAvailable = await CallRegister.findOneAndDelete({_id: workDayAvailable._id})
+            if(!deleteWorkDayAvailable) return res.status(500).send({message: 'Error ending the day'})
+            return res.send({ message: 'Work day completed successfully', finishWorkDay });
+        }
     } catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error finishing the working day' });
@@ -97,9 +124,9 @@ exports.getCallsToday = async (req, res) => {
         var date = new Date();
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
         var month = splitDateNoTime[1]
-        if(lastDay.toLocaleDateString().split('/')[0] < day ){
+        if (lastDay.toLocaleDateString().split('/')[0] < day) {
             day = '01';
-            month = parseInt(splitDateNoTime[1]) + 1 
+            month = parseInt(splitDateNoTime[1]) + 1
         }
 
         const finishTime = splitExactDate[0] + '-' + month + '-' + day;
@@ -118,20 +145,46 @@ exports.getCallsByDate = async (req, res) => {
         const params = req.body;
         const userId = req.user.sub;
         let data = {
-            date: params.date
+            date: params.date.split('T')[0]
         }
+
         let dataRequired = await validateData(data);
         if (dataRequired) return res.status(400).send(dataRequired);
 
-        const date = params.date.split('-')
-        const startTime = params.date;
-        const day = parseInt(date[2]) + 1
-        const finishTime = date[0] + "-" + date[1] + "-" + day
+        const date = data.date.split('-')
+        const startTime = data.date;
+        var day = parseInt(date[2]) + 1
+
+        var currentTime = new Date();
+        var lastDay = new Date(currentTime.getFullYear(), currentTime.getMonth() + 1, 0);
+        var month = date[1]
+        if (lastDay.toLocaleDateString().split('/')[0] < day) {
+            day = '01';
+            month = parseInt(date[1]) + 1
+        }
+
+        const finishTime = date[0] + '-' + month + '-' + day;
 
         const calls = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] }).populate('calls.call');
 
         if (!calls) return res.status(400).send({ message: 'No calls on this date' });
         return res.send({ message: 'Journeys: ', calls })
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).send({ message: 'Error getting Journeys' })
+    }
+}
+
+exports.getCallsById = async (req, res) => {
+    try {
+        const journeyId = req.params.id;
+        const userId = req.user.sub;
+
+        const journey = await CallRegister.findOne({ $and: [{ _id: journeyId }, { worker: userId }] }).populate('calls.call');
+
+        if (!journey) return res.status(400).send({ message: 'No calls on this date' });
+        return res.send({ message: 'Journeys: ', journey })
 
     } catch (err) {
         console.log(err);
