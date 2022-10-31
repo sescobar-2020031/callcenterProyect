@@ -46,7 +46,6 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
         setValues({ ...values, 'endingTime': new Date().toLocaleString() })
     };
 
-    //make the request to the API and save
     const addCall = async (event) => {
 
         event.preventDefault();
@@ -101,7 +100,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
                             >
                                 <MenuItem value={'New Sale'}>New sale</MenuItem>
                                 <MenuItem value={'Sale for renovation'}>Sale for renovation</MenuItem>
-                                <MenuItem value={'Sale not completed'}>Sale not completed,</MenuItem>
+                                <MenuItem value={'Sale not completed'}>Sale not completed</MenuItem>
                                 <MenuItem value={'Sale does not meet the requirement'}>Sale does not meet the requirement</MenuItem>
                             </Select>
                         </FormControl>
@@ -116,7 +115,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
                                     required
                                     fullWidth
                                     id="name"
-                                    label="name"
+                                    label="Name"
                                     name="name"
                                     autoFocus
                                     onChange={onChange}
@@ -128,7 +127,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
                                     required
                                     fullWidth
                                     id="surname"
-                                    label="surname"
+                                    label="Surname"
                                     name="surname"
                                     onChange={onChange}
                                 />
@@ -142,7 +141,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
                                     required
                                     fullWidth
                                     id="identificationNumber"
-                                    label="identificationNumber"
+                                    label="Identification Number"
                                     name="identificationNumber"
                                     onChange={onChange}
                                 />
@@ -153,7 +152,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
                                     required
                                     fullWidth
                                     id="contactNumber"
-                                    label="contactNumber"
+                                    label="Contact Number"
                                     name="contactNumber"
                                     onChange={onChange}
                                 />
@@ -165,7 +164,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
                             required
                             fullWidth
                             id="additionalInformation"
-                            label="additionalInformation"
+                            label="Additional Information"
                             name="additionalInformation"
                             onChange={onChange}
                         />
@@ -175,7 +174,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
                             required
                             fullWidth
                             id="solution"
-                            label="solution"
+                            label="Solution"
                             name="solution"
                             onChange={onChange}
                         />

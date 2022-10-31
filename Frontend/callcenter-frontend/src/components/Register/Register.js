@@ -122,6 +122,8 @@ const Register = () => {
                                 id="email"
                                 label="Email Address"
                                 name="email"
+                                type="email"
+                                wasValidate
                                 autoComplete="email"
                                 onChange={event => setEmail(event.target.value)}
                             />
