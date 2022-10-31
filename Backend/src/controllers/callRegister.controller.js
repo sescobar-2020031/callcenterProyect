@@ -12,11 +12,25 @@ exports.startWorkingDay = async (req, res) => {
     try {
         const params = req.body;
         const userId = req.user.sub;
+
+        const checkInTimeSeparate = params.checkInTime.split(' ');
+        const checkInTimeMonthDay = checkInTimeSeparate[0].split('/');
+        const checkInTimeYear = checkInTimeMonthDay[2].split(',');
+
+        const checkInTimeHourMinuteSecond = checkInTimeSeparate[1].split(':');
+        if(parseInt(checkInTimeHourMinuteSecond[0]) < 10){
+            checkInTimeHourMinuteSecond[0] = '0'+ checkInTimeHourMinuteSecond[0]
+        }
+
+        const time = checkInTimeHourMinuteSecond[0] + ':' + checkInTimeHourMinuteSecond[1] + ':' + checkInTimeHourMinuteSecond[2]
+        const checkInTime = checkInTimeYear[0] + '-' + checkInTimeMonthDay[1] + '-' + checkInTimeMonthDay[0]+ 'T' + time + '.000Z'
+
         let data = {
             worker: userId,
             state: 'Available',
-            checkInTime: params.checkInTime
+            checkInTime: checkInTime
         };
+
         let dataRequired = await validateData(data);
         if (dataRequired) return res.status(400).send(dataRequired);
         let workingDayExist = await CallRegister.findOne({ $and: [{ worker: userId }, { state: 'Available' }] });
@@ -35,10 +49,24 @@ exports.finishWorkingDay = async (req, res) => {
     try {
         const params = req.body;
         const userId = req.user.sub;
+
+        const checkOutTimeSeparate = params.checkOutTime.split(' ');
+        const checkOutTimeMonthDay = checkOutTimeSeparate[0].split('/');
+        const checkOutTimeYear = checkOutTimeMonthDay[2].split(',');
+
+        const checkOutTimeHourMinuteSecond = checkOutTimeSeparate[1].split(':');
+        if(parseInt(checkOutTimeHourMinuteSecond[0]) < 10){
+            checkOutTimeHourMinuteSecond[0] = '0'+ checkOutTimeHourMinuteSecond[0]
+        }
+
+        const time = checkOutTimeHourMinuteSecond[0] + ':' + checkOutTimeHourMinuteSecond[1] + ':' + checkOutTimeHourMinuteSecond[2]
+        const checkOutTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0]+ 'T' + time + '.000Z'
+
         let data = {
             state: 'Done',
-            checkOutTime: params.checkOutTime
+            checkOutTime: checkOutTime
         };
+
         let finishWorkDay = await CallRegister.findOneAndUpdate({ $and: [{ worker: userId }, { state: 'Available' }] }, data, { new: true });
         if (!finishWorkDay) return res.status(500).send({ message: 'You are no longer at work' });
         return res.send({ message: 'Work day completed successfully', finishWorkDay });
@@ -65,8 +93,16 @@ exports.getCallsToday = async (req, res) => {
         const splitExactDate = splitDateNoTime[2].split(',')
         const startTime = splitExactDate[0] + '-' + splitDateNoTime[1] + '-' + splitDateNoTime[0];
         //We make the date with one day more
-        const day = parseInt(splitDateNoTime[0]) + 1;
-        const finishTime = splitExactDate[0] + '-' + splitDateNoTime[1] + '-' + day;
+        var day = parseInt(splitDateNoTime[0]) + 1;
+        var date = new Date();
+        var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        var month = splitDateNoTime[1]
+        if(lastDay.toLocaleDateString().split('/')[0] < day ){
+            day = '01';
+            month = parseInt(splitDateNoTime[1]) + 1 
+        }
+
+        const finishTime = splitExactDate[0] + '-' + month + '-' + day;
         //Search the database where all calls that are greater than "startTime" and less than "finishTime" are searched
         const journeys = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] }).populate('calls.call');
         if (!journeys) return res.status(400).send({ message: 'No calls on this date' });
