@@ -14,20 +14,21 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
-import { Link as LinkReact, Navigate } from "react-router-dom";
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
+import { Link as LinkReact } from "react-router-dom";
+import { Grid } from '@mui/material';
+import StartWorkingDay from '../WorkingDay/StartWorkingDay';
+import FinishWorkingDay from '../WorkingDay/FinishWorkingDay';
 
 const Homepage = () => {
 
     //status for callcenter
-    const [navigate, setNavigate] = useState(false);
 
     const [laborJourneys, setJourneys] = useState([]);
-    const [previousLaborJourneys, setPreviousLaborJourneys] = useState([]);
 
     const [todaysJourneyAvailable, setTodaysJourneyAvailable] = useState(false);
     const [previousJourneyAvailable, setPreviousJourneyAvailable] = useState(false);
     const [callsAvailable, setCallsAvailable] = useState(false);
+    const [inWorkDay, setInWorkDay] = useState(false);
 
     const [refresh, setRefresh] = useState(0);
 
@@ -47,6 +48,9 @@ const Homepage = () => {
         axios.get('http://localhost:3200/callRegister/getAllCalls', { headers: { Authorization: token() } })
             .then((res) => {
                 if (res.data.journeys.length !== 0) {
+                    for (let journey of res.data.journeys) {
+                        if (journey.state === 'Available') setInWorkDay(true)
+                    }
                     if (res.data.journeys[0].calls.length !== 0) {
                         setPreviousJourneyAvailable(true)
                     } else {
@@ -55,7 +59,6 @@ const Homepage = () => {
                 } else {
                     setPreviousJourneyAvailable(false)
                 }
-                setPreviousLaborJourneys(res.data.journeys);
             }).catch((err) => {
                 Swal.fire({
                     icon: 'error',
@@ -70,8 +73,9 @@ const Homepage = () => {
             .then((res) => {
                 if (res.data.journeys.length !== 0) {
                     for (let journey of res.data.journeys) {
+                        if (journey.state === 'Available') setInWorkDay(true)
                         if (journey.calls.length !== 0) {
-                            setCallsAvailable(true)
+                            setCallsAvailable(true);
 
                         } else {
                             setCallsAvailable(false)
@@ -124,7 +128,12 @@ const Homepage = () => {
     return (
         todaysJourneyAvailable && callsAvailable ?
             <div>
-                <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                {
+                    inWorkDay ?
+                        <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                        :
+                        <StartWorkingDay setInWorkDay={setInWorkDay} />
+                }
                 <Typography align='center' variant="h4">Today's calls</Typography>;
                 <TableContainer sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Table sx={{ minWidth: 700, width: '90%' }} aria-label="customized table">
@@ -147,7 +156,7 @@ const Homepage = () => {
                                             <TableBody>
                                                 <StyledTableRow key={call.call._id} >
                                                     <StyledTableCell align="center">{call.call.callTyping}</StyledTableCell>
-                                                    <StyledTableCell align="center">{new Date(call.call.startTime).toString().slice(0, 24)}</StyledTableCell>
+                                                    <StyledTableCell align="center">{new Date(call.call.startTime).toString().slice(0,24)}</StyledTableCell>
                                                     <StyledTableCell align="center">{new Date(call.call.endingTime).toString().slice(0, 24)}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.duration}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.contactNumber}</StyledTableCell>
@@ -162,22 +171,60 @@ const Homepage = () => {
                         }
                     </Table>
                 </TableContainer>
-                <Box textAlign='center' sx={{mt: '1rem'}}>
-                    <LinkReact to="/previousWorkDays" style={{ textDecoration: 'none', color: "inherit", marginLeft: "auto" }}>
-                        <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>show Table Previous Work Days</Button>
-                    </LinkReact>
-                </Box>
+                {
+                    inWorkDay ?
+                        <Box textAlign='center' sx={{ mt: '1rem' }}>
+                            <Grid container>
+                                <Grid item xs={6}>
+                                    <LinkReact to="/previousWorkDays" style={{ textDecoration: 'none', color: "inherit"}}>
+                                        <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>show Table Previous Work Days</Button>
+                                    </LinkReact>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    <FinishWorkingDay setInWorkDay={setInWorkDay} />
+                                </Grid>
+                            </Grid>
+                        </Box>
+                        :
+                        <Box textAlign='center' sx={{ mt: '1rem' }}>
+                            <LinkReact to="/previousWorkDays" style={{ textDecoration: 'none', color: "inherit", marginLeft: "auto" }}>
+                                <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>show Table Previous Work Days</Button>
+                            </LinkReact>
+                        </Box>
+                }
             </div>
             : previousJourneyAvailable
                 ?
                 <div>
-                    <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
-                    <PreviousWorkDays values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} previousLaborJourneys={previousLaborJourneys} setPreviousLaborJourneys={setPreviousLaborJourneys} setPreviousJourneyAvailable={setPreviousJourneyAvailable} />
+                    {
+                        inWorkDay ?
+                            <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                            :
+                            <StartWorkingDay setInWorkDay={setInWorkDay} />
+                    }
+                    <PreviousWorkDays previousJourneyAvailable={previousJourneyAvailable} />
+                    {
+                        inWorkDay ? 
+                        <FinishWorkingDay setInWorkDay={setInWorkDay} />
+                        :
+                        <br />
+                    }
                 </div>
                 :
                 <div>
-                    <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                    {
+                        inWorkDay ?
+                            <AddCall values={values} setValues={setValues} refresh={refresh} setRefresh={setRefresh} />
+                            :
+                            <StartWorkingDay setInWorkDay={setInWorkDay} />
+                    }
                     <Typography align='center' variant="h4">You have no working days available</Typography>;
+                    {
+                        inWorkDay ? 
+                        <FinishWorkingDay setInWorkDay={setInWorkDay} />
+                        :
+                        <br />
+                    }
                 </div>
     )
 }

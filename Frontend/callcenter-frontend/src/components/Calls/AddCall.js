@@ -20,7 +20,8 @@ const style = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 650,
+    width: '43%',
+    ['@media (max-width:780px)']:{width: '80%'},
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -37,6 +38,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
     };
 
     const startTime = () => {
+        console.log(new Date().toLocaleString())
         setValues({ ...values, 'startTime': new Date().toLocaleString() })
     };
 

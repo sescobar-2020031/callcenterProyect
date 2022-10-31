@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import AddCall from '../Calls/AddCall';
+import { Link as LinkReact } from "react-router-dom";
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import token from '../../shared/userData/getToken';
@@ -14,7 +14,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 
-const PreviousWorkDays = () => {
+const PreviousWorkDays = ({ previousJourneyAvailable }) => {
 
     const [previousLaborJourneys, setPreviousLaborJourneys] = useState([]);
 
@@ -53,6 +53,20 @@ const PreviousWorkDays = () => {
 
     return (
         <div>
+            {
+                previousJourneyAvailable ?
+                    <br />
+                    :
+                    <LinkReact to="/homePage" style={{ textDecoration: 'none', color: "inherit" }}>
+                        <Button
+                            type="button"
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2, ml: 3 }}
+                        >
+                            Return
+                        </Button>
+                    </LinkReact>
+            }
             <Typography align='center' variant="h4">Previous Work Days</Typography>;
             <TableContainer sx={{ display: 'flex', justifyContent: 'center' }}>
                 <Table sx={{ minWidth: 700, width: '90%' }} aria-label="customized table">
@@ -74,7 +88,12 @@ const PreviousWorkDays = () => {
                                         <StyledTableCell align="center">Journey {journey.checkInTime.slice(0, 10)}</StyledTableCell>
                                         <StyledTableCell align="center">Journey {journey.state}</StyledTableCell>
                                         <StyledTableCell align="center">{new Date(journey.checkInTime).toString().slice(0, 24)}</StyledTableCell>
-                                        <StyledTableCell align="center">{new Date(journey.checkOutTime).toString().slice(0, 24)}</StyledTableCell>
+                                        {
+                                            journey.checkOutTime ?
+                                                <StyledTableCell align="center">{new Date(journey.checkOutTime).toString().slice(0, 24)}</StyledTableCell>
+                                                :
+                                                <StyledTableCell align="center">Active working day</StyledTableCell>
+                                        }
                                         <StyledTableCell align="center">{journey.calls.length}</StyledTableCell>
                                         <StyledTableCell align="center"><Button sx={{ color: '#000000' }} startIcon={<ContactPhoneIcon />}>Calls</Button>,</StyledTableCell>
                                     </StyledTableRow>
