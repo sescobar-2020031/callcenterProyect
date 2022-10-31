@@ -93,6 +93,7 @@ const Login = ({logged, setLogged}) => {
                 id="email"
                 label="Email Address"
                 name="email"
+                type="email"
                 autoComplete="email"
                 autoFocus
                 onChange={e => setEmail(e.target.value)}

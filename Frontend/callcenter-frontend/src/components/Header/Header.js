@@ -10,7 +10,6 @@ import {
 import LogoutIcon from '@mui/icons-material/Logout';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-import AssessmentIcon from '@mui/icons-material/Assessment';
 import { Link, Link as LinkReact } from "react-router-dom";
 import NavigationDrawer from "../NavigationDrawer/NavigationDrawer";
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
@@ -73,15 +72,6 @@ const Header = ({logged, setLogged}) => {
                                                     startIcon={<HowToRegIcon />}
                                                 >
                                                     Sign Up
-                                                </Button>
-                                            </Link>
-
-                                            <Link to="/register" style={{ textDecoration: 'none', color: "inherit" }}>
-                                                <Button
-                                                    variant="contained"
-                                                    startIcon={<AssessmentIcon />}
-                                                >
-                                                    Report
                                                 </Button>
                                             </Link>
                                         </Stack>

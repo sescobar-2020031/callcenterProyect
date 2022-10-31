@@ -53,15 +53,6 @@ const NavigationDrawer = ({ logged, setLogged }) => {
                                         </ListItemText>
                                     </ListItemIcon>
                                 </ListItemButton>
-                                <ListItemButton>
-                                    <ListItemIcon>
-                                        <ListItemText>
-                                            <LinkReact to="/register" style={{ textDecoration: 'none', color: "inherit", marginLeft: "auto" }}>
-                                                Report
-                                            </LinkReact>
-                                        </ListItemText>
-                                    </ListItemIcon>
-                                </ListItemButton>
                             </>
                     }
                 </List>

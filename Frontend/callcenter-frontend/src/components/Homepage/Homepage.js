@@ -156,8 +156,8 @@ const Homepage = () => {
                                             <TableBody>
                                                 <StyledTableRow key={call.call._id} >
                                                     <StyledTableCell align="center">{call.call.callTyping}</StyledTableCell>
-                                                    <StyledTableCell align="center">{new Date(call.call.startTime).toString().slice(0,24)}</StyledTableCell>
-                                                    <StyledTableCell align="center">{new Date(call.call.endingTime).toString().slice(0, 24)}</StyledTableCell>
+                                                    <StyledTableCell align="center">{new Date(call.call.startTime).toJSON().slice(0,10) + ' ' + new Date(call.call.startTime).toJSON().slice(11,19)}</StyledTableCell>
+                                                    <StyledTableCell align="center">{new Date(call.call.endingTime).toJSON().slice(0,10) + ' ' + new Date(call.call.endingTime).toJSON().slice(11,19)}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.duration}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.contactNumber}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.solution}</StyledTableCell>
