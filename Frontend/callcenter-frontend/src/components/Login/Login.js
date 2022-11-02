@@ -24,7 +24,7 @@ const Login = ({ logged, setLogged }) => {
 
   const handleSubmit = async event => {
     event.preventDefault();
-    await axios.post('http://localhost:3200/worker/login', { email, password })
+    await axios.post('https://callcenter-easygo.herokuapp.com/worker/login', { email, password })
       .then((res) => {
         localStorage.setItem('identity', JSON.stringify(res.data.user));
         localStorage.setItem('loggedIn', true);

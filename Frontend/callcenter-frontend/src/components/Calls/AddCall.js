@@ -51,7 +51,7 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
 
         axios.defaults.headers.common['Authorization'] = token();
 
-        await axios.post('http://localhost:3200/call/saveCall', values)
+        await axios.post('https://callcenter-easygo.herokuapp.com/call/saveCall', values)
             .then((res) => {
                 Swal.fire({
                     icon: 'success',

@@ -38,7 +38,7 @@ const PreviousWorkDays = ({ previousJourneyAvailable, inWorkDay }) => {
     }
 
     useEffect(() => {
-        axios.get('http://localhost:3200/callRegister/getAllCalls', { headers: { Authorization: token() } })
+        axios.get('https://callcenter-easygo.herokuapp.com/callRegister/getAllCalls', { headers: { Authorization: token() } })
             .then((res) => {
                 setPreviousLaborJourneys(res.data.journeys);
             }).catch((err) => {
@@ -64,7 +64,7 @@ const PreviousWorkDays = ({ previousJourneyAvailable, inWorkDay }) => {
             date: searchByDate
         };
 
-        await axios.post('http://localhost:3200/callRegister/getCallsByDate', data)
+        await axios.post('https://callcenter-easygo.herokuapp.com/callRegister/getCallsByDate', data)
             .then((res) => {
                 setPreviousLaborJourneys(res.data.calls);
                 setSearchResult(true);

@@ -9,7 +9,7 @@ const StartWorkingDay = ({setInWorkDay}) => {
     const startWorkingDay = async () => {
 
         axios.defaults.headers.common['Authorization'] = token();
-        await axios.post('http://localhost:3200/callRegister/startWorkingDay', { checkInTime: new Date().toLocaleString() })
+        await axios.post('https://callcenter-easygo.herokuapp.com/callRegister/startWorkingDay', { checkInTime: new Date().toLocaleString() })
             .then((res) => {
                 Swal.fire({
                     icon: 'success',

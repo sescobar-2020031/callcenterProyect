@@ -60,7 +60,7 @@ const WorkdayCalls = () => {
     const location = useLocation();
 
     useEffect(() => {
-        axios.get(`http://localhost:3200/callRegister/getCallsById/${location.state.idProps}`, { headers: { Authorization: token() } })
+        axios.get(`https://callcenter-easygo.herokuapp.com/callRegister/getCallsById/${location.state.idProps}`, { headers: { Authorization: token() } })
             .then((res) => {
                 setWorkdayCalls(res.data.journey.calls);
                 setTitle(res.data.journey.checkInTime.slice(0, 10));
@@ -74,7 +74,7 @@ const WorkdayCalls = () => {
     }, [location.state.idProps]);
 
     const callDetail = (id) => {
-        axios.get(`http://localhost:3200/call/getCall/${id}`, { headers: { Authorization: token() } })
+        axios.get(`https://callcenter-easygo.herokuapp.com/call/getCall/${id}`, { headers: { Authorization: token() } })
             .then((res) => {
                 setCall(res.data.call);
             }).catch((err) => {

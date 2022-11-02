@@ -27,7 +27,7 @@ const Register = () => {
 
     const handleSubmit = async event => {
         event.preventDefault();
-        await axios.post('http://localhost:3200/worker/register', {
+        await axios.post('https://callcenter-easygo.herokuapp.com/worker/register', {
             name, email, password, phoneNumber, surname
         }).then((res) => {
             Swal.fire({
