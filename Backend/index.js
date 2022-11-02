@@ -7,7 +7,7 @@ const mongoConfig = require('./configs/mongoConfig');
 const app = require('./configs/app');
 
 //Import the Port in a Constant
-const port = 3200 || process.env.PORT;
+const port = process.env.PORT || 3200 ;
 
 mongoConfig.init();
 
