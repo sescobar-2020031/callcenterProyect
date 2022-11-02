@@ -21,8 +21,6 @@ import FinishWorkingDay from '../WorkingDay/FinishWorkingDay';
 
 const Homepage = () => {
 
-    //status for callcenter
-
     const [laborJourneys, setJourneys] = useState([]);
 
     const [todaysJourneyAvailable, setTodaysJourneyAvailable] = useState(false);
@@ -42,22 +40,22 @@ const Homepage = () => {
         additionalInformation: "",
         contactNumber: 0,
         solution: "",
-    })
+    });
 
     const getPreviousWorkingDays = async () => {
         axios.get('http://localhost:3200/callRegister/getAllCalls', { headers: { Authorization: token() } })
             .then((res) => {
                 if (res.data.journeys.length !== 0) {
                     for (let journey of res.data.journeys) {
-                        if (journey.state === 'Available') setInWorkDay(true)
+                        if (journey.state === 'Available') setInWorkDay(true);
                     }
                     if (res.data.journeys[0].calls.length !== 0) {
-                        setPreviousJourneyAvailable(true)
+                        setPreviousJourneyAvailable(true);
                     } else {
-                        setPreviousJourneyAvailable(false)
+                        setPreviousJourneyAvailable(false);
                     }
                 } else {
-                    setPreviousJourneyAvailable(false)
+                    setPreviousJourneyAvailable(false);
                 }
             }).catch((err) => {
                 Swal.fire({
@@ -76,13 +74,12 @@ const Homepage = () => {
                         if (journey.state === 'Available') setInWorkDay(true)
                         if (journey.calls.length !== 0) {
                             setCallsAvailable(true);
-
                         } else {
-                            setCallsAvailable(false)
+                            setCallsAvailable(false);
                             getPreviousWorkingDays();
                         }
                     }
-                    setTodaysJourneyAvailable(true)
+                    setTodaysJourneyAvailable(true);
                 } else {
                     setTodaysJourneyAvailable(false);
                     getPreviousWorkingDays();
@@ -97,7 +94,6 @@ const Homepage = () => {
             });
     }, [refresh]);
 
-    //styles for the table
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
         [`&.${tableCellClasses.head}`]: {
             backgroundColor: theme.palette.primary.main,
@@ -134,7 +130,8 @@ const Homepage = () => {
                         :
                         <StartWorkingDay setInWorkDay={setInWorkDay} />
                 }
-                <Typography align='center' variant="h4">Today's calls</Typography>;
+                <Typography align='center' variant="h4">Today's calls</Typography>
+                <br />
                 <TableContainer sx={{ display: 'flex', justifyContent: 'center' }}>
                     <Table sx={{ minWidth: 700, width: '90%' }} aria-label="customized table">
                         <TableHead>
@@ -151,13 +148,13 @@ const Homepage = () => {
                         {
                             rows.map((row) => {
                                 return (
-                                    row.calls.map((call) => {
+                                    row.calls.map((call, index) => {
                                         return (
-                                            <TableBody>
+                                            <TableBody key={index}>
                                                 <StyledTableRow key={call.call._id} >
                                                     <StyledTableCell align="center">{call.call.callTyping}</StyledTableCell>
-                                                    <StyledTableCell align="center">{new Date(call.call.startTime).toJSON().slice(0,10) + ' ' + new Date(call.call.startTime).toJSON().slice(11,19)}</StyledTableCell>
-                                                    <StyledTableCell align="center">{new Date(call.call.endingTime).toJSON().slice(0,10) + ' ' + new Date(call.call.endingTime).toJSON().slice(11,19)}</StyledTableCell>
+                                                    <StyledTableCell align="center">{new Date(call.call.startTime).toJSON().slice(0, 10) + ' ' + new Date(call.call.startTime).toJSON().slice(11, 19)}</StyledTableCell>
+                                                    <StyledTableCell align="center">{new Date(call.call.endingTime).toJSON().slice(0, 10) + ' ' + new Date(call.call.endingTime).toJSON().slice(11, 19)}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.duration}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.contactNumber}</StyledTableCell>
                                                     <StyledTableCell align="center">{call.call.solution}</StyledTableCell>
@@ -176,8 +173,8 @@ const Homepage = () => {
                         <Box textAlign='center' sx={{ mt: '1rem' }}>
                             <Grid container>
                                 <Grid item xs={6}>
-                                    <LinkReact to="/previousWorkDays" style={{ textDecoration: 'none', color: "inherit"}}>
-                                        <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>show Table Previous Work Days</Button>
+                                    <LinkReact to="/previousWorkDays" style={{ textDecoration: 'none', color: "inherit" }}>
+                                        <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>Show table previous work days</Button>
                                     </LinkReact>
                                 </Grid>
                                 <Grid item xs={6}>
@@ -188,7 +185,7 @@ const Homepage = () => {
                         :
                         <Box textAlign='center' sx={{ mt: '1rem' }}>
                             <LinkReact to="/previousWorkDays" style={{ textDecoration: 'none', color: "inherit", marginLeft: "auto" }}>
-                                <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>show Table Previous Work Days</Button>
+                                <Button sx={{ margin: '0.3rem', marginBottom: '3rem' }} variant='contained'>Show table previous work days</Button>
                             </LinkReact>
                         </Box>
                 }
@@ -202,12 +199,12 @@ const Homepage = () => {
                             :
                             <StartWorkingDay setInWorkDay={setInWorkDay} />
                     }
-                    <PreviousWorkDays previousJourneyAvailable={previousJourneyAvailable} />
+                    <PreviousWorkDays inWorkDay={inWorkDay} previousJourneyAvailable={previousJourneyAvailable} />
                     {
-                        inWorkDay ? 
-                        <FinishWorkingDay setInWorkDay={setInWorkDay} />
-                        :
-                        <br />
+                        inWorkDay ?
+                            <FinishWorkingDay setInWorkDay={setInWorkDay} />
+                            :
+                            <br />
                     }
                 </div>
                 :
@@ -220,13 +217,13 @@ const Homepage = () => {
                     }
                     <Typography align='center' variant="h4">You have no working days available</Typography>;
                     {
-                        inWorkDay ? 
-                        <FinishWorkingDay setInWorkDay={setInWorkDay} />
-                        :
-                        <br />
+                        inWorkDay ?
+                            <FinishWorkingDay setInWorkDay={setInWorkDay} />
+                            :
+                            <br />
                     }
                 </div>
     )
-}
+};
 
 export default Homepage;

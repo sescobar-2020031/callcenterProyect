@@ -24,7 +24,7 @@ const Header = ({logged, setLogged}) => {
         localStorage.removeItem('identity');
         localStorage.removeItem('token');
         localStorage.removeItem('loggedIn');
-        setLogged(false)
+        setLogged(false);
     }
 
     return (
@@ -50,6 +50,7 @@ const Header = ({logged, setLogged}) => {
                                             variant="contained"
                                             startIcon={<LogoutIcon />}
                                             onClick={logout}
+                                            color="error"
                                         >
                                             Logout
                                         </Button>

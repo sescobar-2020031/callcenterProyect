@@ -21,7 +21,7 @@ const style = {
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '43%',
-    ['@media (max-width:780px)']:{width: '80%'},
+    '@media (max-width:780px)':{width: '80%'},
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -38,12 +38,11 @@ const AddCall = ({ values, setValues, refresh, setRefresh }) => {
     };
 
     const startTime = () => {
-        console.log(new Date().toLocaleString())
-        setValues({ ...values, 'startTime': new Date().toLocaleString() })
+        setValues({ ...values, 'startTime': new Date().toLocaleString() });
     };
 
     const endingTime = () => {
-        setValues({ ...values, 'endingTime': new Date().toLocaleString() })
+        setValues({ ...values, 'endingTime': new Date().toLocaleString() });
     };
 
     const addCall = async (event) => {
