@@ -13,11 +13,11 @@ exports.ensureAuth = (req, res, next) => {
             var payload = jwt.decode(token, secretKey);
             if(payload.exp <= moment().unix()){
                 return res.status(401).send({message: 'Expired token'});
-            }
+            };
         }catch(err){
             return res.status(404).send({message: 'The token is not valid'});
-        }
+        };
         req.user = payload;
         next();
-    }
-}
+    };
+};
