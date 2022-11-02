@@ -2,7 +2,7 @@
 
 const Call = require('../models/call.model');
 const CallRegister = require('../models/callRegister.model');
-const { validateData, validateNumber } = require('../utils/validate');
+const { validateData, validateNumber, getStartTimeAndFinishTimeSpecific } = require('../utils/validate');
 
 exports.testCall = (req, res) => {
     return res.send({ message: 'The test is working on -Call-' });
@@ -13,41 +13,11 @@ exports.saveCall = async (req, res) => {
         const params = req.body;
         const userId = req.user.sub;
 
-        const startTimeSeparate = params.startTime.split(' ');
-        const startTimeMonthDay = startTimeSeparate[0].split('/');
-        const startTimeYear = startTimeMonthDay[2].split(',');
+        const responseStartTime = await getStartTimeAndFinishTimeSpecific(params.startTime);
+        const startTime = responseStartTime.requiredTime;
 
-        const startTimeHourMinuteSecond = startTimeSeparate[1].split(':')
-        if (parseInt(startTimeHourMinuteSecond[0]) < 10) {
-            startTimeHourMinuteSecond[0] = '0' + startTimeHourMinuteSecond[0];
-        }
-        if (startTimeMonthDay[0] < 10) {
-            startTimeMonthDay[0] = '0' + startTimeMonthDay[0];
-        }
-        if (startTimeMonthDay[1] < 10) {
-            startTimeMonthDay[1] = '0' + startTimeMonthDay[1];
-        }
-
-        const startTime = startTimeYear[0] + '-' + startTimeMonthDay[1] + '-' + startTimeMonthDay[0] + 'T' +
-            startTimeHourMinuteSecond[0] + ':' + startTimeHourMinuteSecond[1] + ':' + startTimeHourMinuteSecond[2] + '.000Z';
-
-        const endingTimeSeparate = params.endingTime.split(' ');
-        const endingTimeMonthDay = endingTimeSeparate[0].split('/');
-        const endingTimeYear = endingTimeMonthDay[2].split(',');
-
-        const endingTimeHourMinuteSecond = endingTimeSeparate[1].split(':');
-        if (parseInt(endingTimeHourMinuteSecond[0]) < 10) {
-            endingTimeHourMinuteSecond[0] = '0' + endingTimeHourMinuteSecond[0];
-        }
-        if (endingTimeMonthDay[0] < 10) {
-            endingTimeMonthDay[0] = '0' + endingTimeMonthDay[0];
-        }
-        if (endingTimeMonthDay[1] < 10) {
-            endingTimeMonthDay[1] = '0' + endingTimeMonthDay[1];
-        }
-
-        const endingTime = endingTimeYear[0] + '-' + endingTimeMonthDay[1] + '-' + endingTimeMonthDay[0] + 'T' + 
-            endingTimeHourMinuteSecond[0] + ':' + endingTimeHourMinuteSecond[1] + ':' + endingTimeHourMinuteSecond[2] + '.000Z';
+        const responseEndingTime = await getStartTimeAndFinishTimeSpecific(params.endingTime);
+        const endingTime = responseEndingTime.requiredTime;
 
         let data = {
             callTyping: params.callTyping,
@@ -98,8 +68,10 @@ exports.saveCall = async (req, res) => {
 exports.getCall = async (req, res) => {
     try {
         const callId = req.params.id;
+
         const call = await Call.findOne({ _id: callId });
         if (!call) return res.status(400).send({ message: 'Call not found' });
+
         return res.send({ message: 'Call: ', call });
     } catch (err) {
         console.log(err);

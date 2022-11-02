@@ -2,7 +2,7 @@
 
 const Worker = require('../models/worker.model');
 const jwt = require('../services/jwt');
-const { validateData, findUser, encryptPassword, validateNumber, checkPassword } = require('../utils/validate');
+const { validateData, findUser, encryptPassword, validateNumber, checkPassword, validateEmail } = require('../utils/validate');
 
 exports.testWorker = (req, res) => {
     return res.send({ message: 'The test is working on -Worker-' });
@@ -22,8 +22,8 @@ exports.register = async (req, res) => {
         if (dataRequired) return res.status(400).send(dataRequired);
         let validNumber = await validateNumber(data.phoneNumber);
         if (!validNumber) return res.status(400).send({ message: 'Your phone number contains a letter' });
-        var validEmail = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-        if (!validEmail.test(data.email)) return res.status(400).send({ message: 'Your email is invalid' });
+        let validEmail = await validateEmail(data.email);
+        if (!validEmail) return res.status(400).send({ message: 'Your email is invalid' });
         let userExist = await findUser(data.email);
         if (userExist) return res.status(400).send({ message: 'Email already registered' });
         data.password = await encryptPassword(data.password);
