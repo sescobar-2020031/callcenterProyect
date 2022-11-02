@@ -18,5 +18,5 @@ exports.createToken = async(user)=>{
     }catch(err){
         console.log(err);
         return err;
-    }
-}
+    };
+};

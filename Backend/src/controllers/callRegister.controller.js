@@ -5,7 +5,7 @@ const { validateData } = require('../utils/validate');
 
 exports.testCallRegister = (req, res) => {
     return res.send({ message: 'The test is working on -callRegister-' });
-}
+};
 
 exports.startWorkingDay = async (req, res) => {
     try {
@@ -16,13 +16,20 @@ exports.startWorkingDay = async (req, res) => {
         const checkInTimeMonthDay = checkInTimeSeparate[0].split('/');
         const checkInTimeYear = checkInTimeMonthDay[2].split(',');
 
+        if (checkInTimeMonthDay[0] < 10) {
+            checkInTimeMonthDay[0] = '0' + checkInTimeMonthDay[0];
+        };
+        if (checkInTimeMonthDay[1] < 10) {
+            checkInTimeMonthDay[1] = '0' + checkInTimeMonthDay[1];
+        };
+
         const checkInTimeHourMinuteSecond = checkInTimeSeparate[1].split(':');
         if (parseInt(checkInTimeHourMinuteSecond[0]) < 10) {
-            checkInTimeHourMinuteSecond[0] = '0' + checkInTimeHourMinuteSecond[0]
-        }
+            checkInTimeHourMinuteSecond[0] = '0' + checkInTimeHourMinuteSecond[0];
+        };
 
-        const time = checkInTimeHourMinuteSecond[0] + ':' + checkInTimeHourMinuteSecond[1] + ':' + checkInTimeHourMinuteSecond[2]
-        const checkInTime = checkInTimeYear[0] + '-' + checkInTimeMonthDay[1] + '-' + checkInTimeMonthDay[0] + 'T' + time + '.000Z'
+        const time = checkInTimeHourMinuteSecond[0] + ':' + checkInTimeHourMinuteSecond[1] + ':' + checkInTimeHourMinuteSecond[2];
+        const checkInTime = checkInTimeYear[0] + '-' + checkInTimeMonthDay[1] + '-' + checkInTimeMonthDay[0] + 'T' + time + '.000Z';
 
         let data = {
             worker: userId,
@@ -41,8 +48,8 @@ exports.startWorkingDay = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error starting the working day' });
-    }
-}
+    };
+};
 
 exports.finishWorkingDay = async (req, res) => {
     try {
@@ -53,26 +60,33 @@ exports.finishWorkingDay = async (req, res) => {
         const checkOutTimeMonthDay = checkOutTimeSeparate[0].split('/');
         const checkOutTimeYear = checkOutTimeMonthDay[2].split(',');
 
+        if (checkOutTimeMonthDay[0] < 10) {
+            checkOutTimeMonthDay[0] = '0' + checkOutTimeMonthDay[0];
+        };
+        if (checkOutTimeMonthDay[1] < 10) {
+            checkOutTimeMonthDay[1] = '0' + checkOutTimeMonthDay[1];
+        };
+
         const checkOutTimeHourMinuteSecond = checkOutTimeSeparate[1].split(':');
         if (parseInt(checkOutTimeHourMinuteSecond[0]) < 10) {
-            checkOutTimeHourMinuteSecond[0] = '0' + checkOutTimeHourMinuteSecond[0]
-        }
+            checkOutTimeHourMinuteSecond[0] = '0' + checkOutTimeHourMinuteSecond[0];
+        };
 
-        const time = checkOutTimeHourMinuteSecond[0] + ':' + checkOutTimeHourMinuteSecond[1] + ':' + checkOutTimeHourMinuteSecond[2]
-        const checkOutTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0] + 'T' + time + '.000Z'
+        const time = checkOutTimeHourMinuteSecond[0] + ':' + checkOutTimeHourMinuteSecond[1] + ':' + checkOutTimeHourMinuteSecond[2];
+        const checkOutTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0] + 'T' + time + '.000Z';
 
-        const startTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0]
+        const startTime = checkOutTimeYear[0] + '-' + checkOutTimeMonthDay[1] + '-' + checkOutTimeMonthDay[0];
 
         var day = parseInt(checkOutTimeMonthDay[0]) + 1;
         const date = new Date();
         const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        var month = checkOutTimeMonthDay[1]
+        var month = checkOutTimeMonthDay[1];
         if (lastDay.toLocaleDateString().split('/')[0] < day) {
             day = '01';
-            month = parseInt(checkOutTimeMonthDay[1]) + 1
-        }
+            month = parseInt(checkOutTimeMonthDay[1]) + 1;
+        };
 
-        const finishTime = checkOutTimeYear[0] + '-' + month + '-' + day
+        const finishTime = checkOutTimeYear[0] + '-' + month + '-' + day;
 
         const workDayExist = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] });
 
@@ -90,18 +104,18 @@ exports.finishWorkingDay = async (req, res) => {
                 state: 'Done',
                 calls: workDayDone.calls.concat(workDayAvailable.calls),
                 checkOutTime: checkOutTime
-            }
+            };
             let finishWorkDay = await CallRegister.findOneAndUpdate({ _id: workDayDone._id }, data, { new: true });
-            if(!finishWorkDay) return res.status(500).send({message: 'Error ending the day'})
-            let deleteWorkDayAvailable = await CallRegister.findOneAndDelete({_id: workDayAvailable._id})
-            if(!deleteWorkDayAvailable) return res.status(500).send({message: 'Error ending the day'})
+            if(!finishWorkDay) return res.status(500).send({message: 'Error ending the day'});
+            let deleteWorkDayAvailable = await CallRegister.findOneAndDelete({_id: workDayAvailable._id});
+            if(!deleteWorkDayAvailable) return res.status(500).send({message: 'Error ending the day'});
             return res.send({ message: 'Work day completed successfully', finishWorkDay });
-        }
+        };
     } catch (err) {
         console.log(err);
         return res.status(500).send({ message: 'Error finishing the working day' });
-    }
-}
+    };
+};
 
 exports.getCallsToday = async (req, res) => {
     try {
@@ -112,69 +126,81 @@ exports.getCallsToday = async (req, res) => {
         //We verify that if the month and day is less than 10 add a 0
         if (splitDateNoTime[0] < 10) {
             splitDateNoTime[0] = '0' + splitDateNoTime[0];
-        }
+        };
         if (splitDateNoTime[1] < 10) {
             splitDateNoTime[1] = '0' + splitDateNoTime[1];
-        }
+        };
         //We remove the comma a year
-        const splitExactDate = splitDateNoTime[2].split(',')
+        const splitExactDate = splitDateNoTime[2].split(',');
         const startTime = splitExactDate[0] + '-' + splitDateNoTime[1] + '-' + splitDateNoTime[0];
         //We make the date with one day more
         var day = parseInt(splitDateNoTime[0]) + 1;
         var date = new Date();
         var lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-        var month = splitDateNoTime[1]
+        var month = splitDateNoTime[1];
         if (lastDay.toLocaleDateString().split('/')[0] < day) {
             day = '01';
-            month = parseInt(splitDateNoTime[1]) + 1
-        }
-
+            month = parseInt(splitDateNoTime[1]) + 1;
+        };
+        if (day < 10) {
+            day = '0' + day;
+        };
+        if (month < 10) {
+            month = '0' + month;
+        };
         const finishTime = splitExactDate[0] + '-' + month + '-' + day;
         //Search the database where all calls that are greater than "startTime" and less than "finishTime" are searched
         const journeys = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] }).populate('calls.call');
         if (!journeys) return res.status(400).send({ message: 'No calls on this date' });
-        return res.send({ message: 'Calls: ', journeys })
+        return res.send({ message: 'Calls: ', journeys });
     } catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting calls' })
-    }
-}
+        return res.status(500).send({ message: 'Error getting calls' });
+    };
+};
 
 exports.getCallsByDate = async (req, res) => {
     try {
         const params = req.body;
         const userId = req.user.sub;
+
         let data = {
-            date: params.date.split('T')[0]
-        }
+            date: params.date
+        };
 
         let dataRequired = await validateData(data);
         if (dataRequired) return res.status(400).send(dataRequired);
+        data.date = data.date.split('T')[0];
 
-        const date = data.date.split('-')
+        const date = data.date.split('-');
         const startTime = data.date;
-        var day = parseInt(date[2]) + 1
+        var day = parseInt(date[2]) + 1;
 
         var currentTime = new Date();
         var lastDay = new Date(currentTime.getFullYear(), currentTime.getMonth() + 1, 0);
-        var month = date[1]
+        var month = date[1];
         if (lastDay.toLocaleDateString().split('/')[0] < day) {
             day = '01';
-            month = parseInt(date[1]) + 1
-        }
-
+            month = parseInt(date[1]) + 1;
+        };
+        if (day < 10) {
+            day = '0' + day;
+        };
+        if (month < 10) {
+            month = '0' + month;
+        };
         const finishTime = date[0] + '-' + month + '-' + day;
 
         const calls = await CallRegister.find({ $and: [{ checkInTime: { $gt: new Date(startTime) } }, { checkInTime: { $lt: new Date(finishTime) } }, { worker: userId }] }).populate('calls.call');
 
         if (!calls) return res.status(400).send({ message: 'No calls on this date' });
-        return res.send({ message: 'Journeys: ', calls })
+        return res.send({ message: 'Journeys: ', calls });
 
     } catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting Journeys' })
-    }
-}
+        return res.status(500).send({ message: 'Error getting previous work days' });
+    };
+};
 
 exports.getCallsById = async (req, res) => {
     try {
@@ -184,22 +210,22 @@ exports.getCallsById = async (req, res) => {
         const journey = await CallRegister.findOne({ $and: [{ _id: journeyId }, { worker: userId }] }).populate('calls.call');
 
         if (!journey) return res.status(400).send({ message: 'No calls on this date' });
-        return res.send({ message: 'Journeys: ', journey })
+        return res.send({ message: 'Journeys: ', journey });
 
     } catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting Journeys' })
-    }
-}
+        return res.status(500).send({ message: 'Error getting Journeys' });
+    };
+};
 
 exports.getAllCalls = async (req, res) => {
     try {
         const userId = req.user.sub;
         const journeys = await CallRegister.find({ worker: userId }).populate('calls.call');
         if (!journeys) return res.status(400).send({ message: 'You have not made calls' });
-        return res.send({ message: 'Journeys: ', journeys })
+        return res.send({ message: 'Journeys: ', journeys });
     } catch (err) {
         console.log(err);
-        return res.status(500).send({ message: 'Error getting Journeys' })
-    }
-}
+        return res.status(500).send({ message: 'Error getting Journeys' });
+    };
+};

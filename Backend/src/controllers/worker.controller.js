@@ -6,7 +6,7 @@ const { validateData, findUser, encryptPassword, validateNumber, checkPassword }
 
 exports.testWorker = (req, res) => {
     return res.send({ message: 'The test is working on -Worker-' });
-}
+};
 
 exports.register = async (req, res) => {
     try {
@@ -34,8 +34,8 @@ exports.register = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).send({ err, message: 'Error saving a worker' });
-    }
-}
+    };
+};
 
 exports.login = async (req, res) => {
     try {
@@ -55,5 +55,5 @@ exports.login = async (req, res) => {
     } catch (err) {
         console.log(err);
         return res.status(500).send({ err, message: 'Failed to login' });
-    }
-}
+    };
+};
