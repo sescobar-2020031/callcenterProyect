@@ -7,5 +7,6 @@ export const getToken = () => {
         token = '';
     }
     return token;
-}
+};
+
 export default getToken;

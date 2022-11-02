@@ -18,7 +18,6 @@ const theme = createTheme();
 
 const Register = () => {
 
-    //status for each attribute in the list
     const [navigate, setNavigate] = useState(false);
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
@@ -26,7 +25,6 @@ const Register = () => {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [surname, setSurname] = useState('');
 
-    //create a new user
     const handleSubmit = async event => {
         event.preventDefault();
         await axios.post('http://localhost:3200/worker/register', {
@@ -48,7 +46,7 @@ const Register = () => {
     };
 
     if (navigate) {
-        return <Navigate to='/login' />;
+        return <Navigate to='/login' />
     }
 
     return (

@@ -16,41 +16,38 @@ import backgroundImage from '../../shared/img/backgroundLogin.png'
 
 const theme = createTheme();
 
-const Login = ({logged, setLogged}) => {
+const Login = ({ logged, setLogged }) => {
 
-  //status for each attribute in the list(update)
   const [navigate, setNavigate] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  //log in a user
   const handleSubmit = async event => {
     event.preventDefault();
-    await axios.post('http://localhost:3200/worker/login', {
-      email, password
-    }).then((res) => {
-      localStorage.setItem('identity', JSON.stringify(res.data.user));
-      localStorage.setItem('loggedIn', true);
-      setLogged(true)
-      localStorage.setItem('token', res.data.token);
-      Swal.fire
-        ({
-          icon: 'success',
-          title: (res.data.message),
-          confirmButtonColor: '#28B463'
+    await axios.post('http://localhost:3200/worker/login', { email, password })
+      .then((res) => {
+        localStorage.setItem('identity', JSON.stringify(res.data.user));
+        localStorage.setItem('loggedIn', true);
+        localStorage.setItem('token', res.data.token);
+        setLogged(true);
+        Swal.fire
+          ({
+            icon: 'success',
+            title: (res.data.message),
+            confirmButtonColor: '#28B463'
+          });
+        setNavigate(true);
+      }).catch((err) => {
+        Swal.fire({
+          icon: 'error',
+          title: (err.response.data.message || err.response.data),
+          confirmButtonColor: '#E74C3C'
         });
-      setNavigate(true);
-    }).catch((err) => {
-      Swal.fire({
-        icon: 'error',
-        title: (err.response.data.message || err.response.data),
-        confirmButtonColor: '#E74C3C'
       });
-    });
   };
 
   if (navigate) {
-    return <Navigate to='/homePage' />;
+    return <Navigate to='/homePage' />
   }
 
   return (

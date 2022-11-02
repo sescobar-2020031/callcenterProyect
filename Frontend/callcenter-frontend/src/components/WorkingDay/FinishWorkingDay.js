@@ -34,6 +34,6 @@ const FinishWorkingDay = ({setInWorkDay}) => {
         </Box>
     )
 
-}
+};
 
 export default FinishWorkingDay;

@@ -23,10 +23,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-const PreviousWorkDays = ({ previousJourneyAvailable }) => {
+const PreviousWorkDays = ({ previousJourneyAvailable, inWorkDay }) => {
 
     const [previousLaborJourneys, setPreviousLaborJourneys] = useState([]);
-    const [searchByDate, setSearchByDate] = useState('');
+    const [searchByDate, setSearchByDate] = useState(null);
 
     const [searchResult, setSearchResult] = useState(false);
     const [reloadSearch, setReloadSearch] = useState(false);
@@ -48,7 +48,7 @@ const PreviousWorkDays = ({ previousJourneyAvailable }) => {
                     confirmButtonColor: '#E74C3C'
                 });
             });
-    }, [reloadSearch])
+    }, [reloadSearch, inWorkDay])
 
     const reload = () => {
         setReloadSearch(!reloadSearch);
@@ -62,7 +62,7 @@ const PreviousWorkDays = ({ previousJourneyAvailable }) => {
 
         let data = {
             date: searchByDate
-        }
+        };
 
         await axios.post('http://localhost:3200/callRegister/getCallsByDate', data)
             .then((res) => {
@@ -113,28 +113,36 @@ const PreviousWorkDays = ({ previousJourneyAvailable }) => {
                         </Button>
                     </LinkReact>
             }
-            <Typography align='center' variant="h4">Previous Work Days</Typography>;
+            <Typography align='center' variant="h4">Previous Work Days</Typography>
+            <br />
             <Box textAlign='center' sx={{ mb: '2rem' }}>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DatePicker
-                        label="Search By Date"
-                        value={searchByDate}
-                        maxDate={new Date()}
-                        onChange={(newValue) => {
-                            setSearchByDate(newValue);
-                        }}
-                        renderInput={(params) => <TextField {...params} />}
-                    />
-                </LocalizationProvider>
                 {
                     searchResult ?
-                        <IconButton onClick={() => { reload() }} aria-label="search" >
-                            <CloseIcon sx={{ fontSize: '40px' }} />
-                        </IconButton>
+                        <>
+                            <Box sx={{ display: 'flex', justifyContent: 'center' }} >
+                                <Typography onClick={() => { reload() }} alignSelf='center' sx={{ cursor: 'pointer' }} variant="h6">Close Search</Typography>
+                                <IconButton onClick={() => { reload() }} aria-label="search" >
+                                    <CloseIcon sx={{ fontSize: '40px' }} color="error" />
+                                </IconButton>
+                            </Box>
+                        </>
                         :
-                        <IconButton onClick={() => { previousWorkDays() }} aria-label="search" color="success">
-                            <SearchIcon sx={{ fontSize: '40px' }} />
-                        </IconButton>
+                        <>
+                            <LocalizationProvider dateAdapter={AdapterMoment}>
+                                <DatePicker
+                                    label="Search By Date"
+                                    value={searchByDate}
+                                    maxDate={new Date()}
+                                    onChange={(newValue) => {
+                                        setSearchByDate(newValue);
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
+                            <IconButton onClick={() => { previousWorkDays() }} aria-label="search" color="success">
+                                <SearchIcon sx={{ fontSize: '40px' }} />
+                            </IconButton>
+                        </>
                 }
             </Box>
 
@@ -181,6 +189,6 @@ const PreviousWorkDays = ({ previousJourneyAvailable }) => {
             }
         </div>
     )
-}
+};
 
-export default PreviousWorkDays
+export default PreviousWorkDays;

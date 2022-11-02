@@ -20,14 +20,13 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 
-//style for a modal
 const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
     width: '43%',
-    ['@media (max-width:780px)']: { width: '80%' },
+    '@media (max-width:780px)': { width: '80%' },
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
@@ -63,8 +62,8 @@ const WorkdayCalls = () => {
     useEffect(() => {
         axios.get(`http://localhost:3200/callRegister/getCallsById/${location.state.idProps}`, { headers: { Authorization: token() } })
             .then((res) => {
-                setWorkdayCalls(res.data.journey.calls)
-                setTitle(res.data.journey.checkInTime.slice(0, 10))
+                setWorkdayCalls(res.data.journey.calls);
+                setTitle(res.data.journey.checkInTime.slice(0, 10));
             }).catch((err) => {
                 Swal.fire({
                     icon: 'error',
@@ -72,7 +71,7 @@ const WorkdayCalls = () => {
                     confirmButtonColor: '#E74C3C'
                 });
             });
-    }, []);
+    }, [location.state.idProps]);
 
     const callDetail = (id) => {
         axios.get(`http://localhost:3200/call/getCall/${id}`, { headers: { Authorization: token() } })
@@ -85,7 +84,7 @@ const WorkdayCalls = () => {
                     confirmButtonColor: '#E74C3C'
                 });
             });
-    }
+    };
 
     //styles for the table
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -105,7 +104,6 @@ const WorkdayCalls = () => {
             border: 0,
         },
     }));
-
 
     return (
         <>
@@ -133,7 +131,8 @@ const WorkdayCalls = () => {
                     </LinkReact>
                 </Grid>
             </Grid>
-            <Typography align='center' variant="h4">Workday {title} Calls</Typography>;
+            <Typography align='center' variant="h4">Workday {title} Calls</Typography>
+            <br />
             {
                 workdayCalls.length !== 0 ?
                     <TableContainer sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -177,7 +176,7 @@ const WorkdayCalls = () => {
                 closeAfterTransition
             >
                 <Fade in={open}>
-                    <Box sx={style} component="form" noValidate>
+                    <Box sx={style} component="form">
                         <Typography sx={{ fontSize: '1.5rem', mt: '0.5rem' }} align='center'>
                             Call Detail
                         </Typography>
@@ -310,6 +309,6 @@ const WorkdayCalls = () => {
             </Modal>
         </>
     )
-}
+};
 
 export default WorkdayCalls;

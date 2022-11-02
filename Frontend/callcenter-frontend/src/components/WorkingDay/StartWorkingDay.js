@@ -34,6 +34,6 @@ const StartWorkingDay = ({setInWorkDay}) => {
         </Box>
     )
 
-}
+};
 
 export default StartWorkingDay;
